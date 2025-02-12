@@ -7,16 +7,16 @@ const sequelize_1 = require("sequelize");
 const database_1 = require("../config/database");
 const user_1 = __importDefault(require("./user"));
 const recipe_1 = __importDefault(require("./recipe"));
-class Comment extends sequelize_1.Model {
-    comment_id;
+class Rating extends sequelize_1.Model {
+    rate_id;
     user_id;
     recipe_id;
-    content;
+    rating;
     createdAt;
     updatedAt;
 }
-Comment.init({
-    comment_id: {
+Rating.init({
+    rate_id: {
         type: sequelize_1.DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
@@ -29,17 +29,21 @@ Comment.init({
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
     },
-    content: {
-        type: sequelize_1.DataTypes.TEXT,
+    rating: {
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+            min: 1,
+            max: 5,
+        },
     },
 }, {
     sequelize: database_1.sequelize,
-    tableName: "Comments",
+    tableName: "Ratings",
     timestamps: true,
 });
-Comment.belongsTo(user_1.default, { foreignKey: "user_id" });
-Comment.belongsTo(recipe_1.default, { foreignKey: "recipe_id" });
-user_1.default.hasMany(Comment, { foreignKey: "user_id" });
-recipe_1.default.hasMany(Comment, { foreignKey: "recipe_id" });
-exports.default = Comment;
+Rating.belongsTo(user_1.default, { foreignKey: "user_id" });
+Rating.belongsTo(recipe_1.default, { foreignKey: "recipe_id" });
+user_1.default.hasMany(Rating, { foreignKey: "user_id" });
+recipe_1.default.hasMany(Rating, { foreignKey: "recipe_id" });
+exports.default = Rating;

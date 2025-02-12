@@ -3,18 +3,18 @@ import { sequelize } from "../config/database"
 import User from "./user"
 import Recipe from "./recipe"
 
-class Comment extends Model {
-    public comment_id!: string
-    public user_id!: string
-    public recipe_id!: string
-    public content!: string
+class Rating extends Model {
+    public rate_id!: number
+    public user_id!: number
+    public recipe_id!: number
+    public rating!: number
     public createdAt!: Date
     public updatedAt!: Date
 }
 
-Comment.init(
+Rating.init(
     {
-        comment_id: {
+        rate_id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true,
@@ -27,21 +27,25 @@ Comment.init(
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        content: {
-            type: DataTypes.TEXT,
+        rating: {
+            type: DataTypes.INTEGER,
             allowNull: false,
+            validate: {
+                min: 1,
+                max: 5,
+            },
         },
     },
     {
         sequelize,
-        tableName: "Comments",
+        tableName: "Ratings",
         timestamps: true,
     }
 )
 
-Comment.belongsTo(User, { foreignKey: "user_id" })
-Comment.belongsTo(Recipe, { foreignKey: "recipe_id" })
-User.hasMany(Comment, { foreignKey: "user_id" })
-Recipe.hasMany(Comment, { foreignKey: "recipe_id" })
+Rating.belongsTo(User, { foreignKey: "user_id" })
+Rating.belongsTo(Recipe, { foreignKey: "recipe_id" })
+User.hasMany(Rating, { foreignKey: "user_id" })
+Recipe.hasMany(Rating, { foreignKey: "recipe_id" })
 
-export default Comment
+export default Rating
