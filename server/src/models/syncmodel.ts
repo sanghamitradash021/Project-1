@@ -10,7 +10,7 @@ import RecipeTag from "./recipetag";
 
 const syncTables = async () => {
     try {
-        await User.sync({ alter: true })
+        await User.sync()
         console.log("User table synced successfully")
 
         await Tag.sync({ alter: true })

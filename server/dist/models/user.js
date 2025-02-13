@@ -7,6 +7,7 @@ class User extends sequelize_1.Model {
     username;
     email;
     password;
+    fullname;
     role;
     createdAt;
     updatedAt;

@@ -12,7 +12,7 @@ const favorite_1 = __importDefault(require("./favorite"));
 const recipetag_1 = __importDefault(require("./recipetag"));
 const syncTables = async () => {
     try {
-        await user_1.default.sync({ alter: true });
+        await user_1.default.sync();
         console.log("User table synced successfully");
         await tag_1.default.sync({ alter: true });
         console.log("Tag table synced successfully");
