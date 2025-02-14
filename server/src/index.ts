@@ -1,19 +1,23 @@
 import express from "express";
+// import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import { sequelize } from "./config/database";
 import syncTables from "./models/syncmodel";
 import userRoutes from "./routes/userRoutes";
 import recipeRoutes from "./routes/recipeRoutes";
+
 import { QueryTypes } from "sequelize";
 
 dotenv.config();
 
 const app = express();
 const PORT: number = Number(process.env.PORT) || 3000;
+// const bodyParser = require('body-parser');
 
 app.use(cors());
 app.use(express.json());
+// app.use(bodyParser.json());
 
 app.use("/api/USERS", userRoutes);
 app.use("/api/recipes", recipeRoutes);

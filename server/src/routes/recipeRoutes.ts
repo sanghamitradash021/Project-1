@@ -18,14 +18,11 @@ router.get("/getall", recipeController.getAllRecipes);
 // });
 
 
-
-
-
 // Retrieve a specific recipe by ID
 router.get("/:id", recipeController.getRecipeById);
 
 // Search recipes by title, ingredients, or tags
-router.get("/search", recipeController.searchRecipes);
+router.get("/search/:query", recipeController.searchRecipes);
 
 // Retrieve all recipes with pagination
 

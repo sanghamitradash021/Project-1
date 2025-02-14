@@ -17,7 +17,7 @@ router.get("/getall", recipeController_1.default.getAllRecipes);
 // Retrieve a specific recipe by ID
 router.get("/:id", recipeController_1.default.getRecipeById);
 // Search recipes by title, ingredients, or tags
-router.get("/search", recipeController_1.default.searchRecipes);
+router.get("/search/:query", recipeController_1.default.searchRecipes);
 // Retrieve all recipes with pagination
 // router.get("/recipes", async (req, res)=>{
 //     try {

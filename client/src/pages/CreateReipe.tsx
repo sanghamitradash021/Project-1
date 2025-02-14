@@ -1,107 +1,119 @@
-'use client';
-
-import type React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
 
 const CreateRecipe: React.FC = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [ingredients, setIngredients] = useState('');
-  const [instructions, setInstructions] = useState('');
-  const [preparationTime, setPreparationTime] = useState('');
-  const [difficulty, setDifficulty] = useState('');
-  const [cuisine, setCuisine] = useState('');
-  const [mealType, setMealType] = useState('');
-
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    instructions: '',
+    imageUrl: '',
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Implement your create recipe logic here
-      toast.success('Recipe created successfully!');
-      navigate('/recipes');
+      // API call will go here
+      // const response = await createRecipe(formData);
+      navigate('/');
     } catch (error) {
-      toast.error('Failed to create recipe. Please try again.');
+      console.error('Failed to create recipe:', error);
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Create New Recipe</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full p-2 border rounded"
-          required
-        />
-        <textarea
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="w-full p-2 border rounded"
-          required
-        ></textarea>
-        <textarea
-          placeholder="Ingredients (one per line)"
-          value={ingredients}
-          onChange={(e) => setIngredients(e.target.value)}
-          className="w-full p-2 border rounded"
-          required
-        ></textarea>
-        <textarea
-          placeholder="Instructions"
-          value={instructions}
-          onChange={(e) => setInstructions(e.target.value)}
-          className="w-full p-2 border rounded"
-          required
-        ></textarea>
-        <input
-          type="text"
-          placeholder="Preparation Time"
-          value={preparationTime}
-          onChange={(e) => setPreparationTime(e.target.value)}
-          className="w-full p-2 border rounded"
-          required
-        />
-        <select
-          value={difficulty}
-          onChange={(e) => setDifficulty(e.target.value)}
-          className="w-full p-2 border rounded"
-          required
-        >
-          <option value="">Select Difficulty</option>
-          <option value="easy">Easy</option>
-          <option value="medium">Medium</option>
-          <option value="hard">Hard</option>
-        </select>
-        <input
-          type="text"
-          placeholder="Cuisine"
-          value={cuisine}
-          onChange={(e) => setCuisine(e.target.value)}
-          className="w-full p-2 border rounded"
-          required
-        />
-        <input
-          type="text"
-          placeholder="Meal Type"
-          value={mealType}
-          onChange={(e) => setMealType(e.target.value)}
-          className="w-full p-2 border rounded"
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
-        >
-          Create Recipe
-        </button>
+    <div className="max-w-2xl mx-auto px-4 py-8">
+      <h2 className="text-2xl font-bold mb-6">Create New Recipe</h2>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label
+            htmlFor="title"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Title
+          </label>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            required
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            value={formData.title}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Description
+          </label>
+          <textarea
+            name="description"
+            id="description"
+            required
+            rows={3}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            value={formData.description}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="instructions"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Instructions
+          </label>
+          <textarea
+            name="instructions"
+            id="instructions"
+            required
+            rows={6}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            value={formData.instructions}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="imageUrl"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Image URL
+          </label>
+          <input
+            type="url"
+            name="imageUrl"
+            id="imageUrl"
+            required
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            value={formData.imageUrl}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Create Recipe
+          </button>
+        </div>
       </form>
     </div>
   );

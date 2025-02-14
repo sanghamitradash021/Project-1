@@ -98,11 +98,12 @@ const getRecipeById = async (req: Request, res: Response): Promise<void> => {
  */
 const searchRecipes = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { query } = req.query;
+        console.log("hii")
+        const { query } = req.params;
 
         const recipes = await sequelize.query(
             `SELECT * FROM Recipes 
-             WHERE title LIKE :query OR ingredients LIKE :query OR cuisine LIKE :query OR meal_type LIKE :query`,
+             WHERE title LIKE :query OR ingredients LIKE :query OR cuisine LIKE :query OR mealType LIKE :query`,
             {
                 replacements: { query: `%${query}%` },
                 type: QueryTypes.SELECT,
@@ -111,6 +112,7 @@ const searchRecipes = async (req: Request, res: Response): Promise<void> => {
 
         res.json(recipes);
     } catch (error) {
+        console.log("error in fetching", error);
         res.status(500).json({ message: "Error searching recipes", error });
     }
 };
@@ -128,13 +130,13 @@ const getAllRecipes = async (req: Request, res: Response) => {
         // Ensure page and limit are numbers
         const offset = (Number(page) - 1) * Number(limit);
 
-        const [recipes] = await sequelize.query("SELECT * FROM Recipes LIMIT :limit OFFSET :offset", {
+        const recipes = await sequelize.query("SELECT * FROM Recipes LIMIT :limit OFFSET :offset", {
             replacements: { limit: Number(limit), offset },
             type: QueryTypes.SELECT,
         });
 
-        console.log("Raw Query Result:", recipes);
-        res.json({ recipes });
+        // console.log("Raw Query Result:", recipes);
+        res.json(recipes);
     } catch (error) {
         res.status(500).json({ message: "Error fetching recipes", error });
     }
@@ -164,10 +166,10 @@ const updateRecipe = async (req: Request, res: Response): Promise<void> => {
         }
 
         // Ensure only the creator can update the recipe
-        if (recipe.user_id !== user_id) {
-            res.status(403).json({ message: "Unauthorized to update this recipe" });
-            return;
-        }
+        // if (recipe.user_id !== user_id) {
+        //     res.status(403).json({ message: "Unauthorized to update this recipe" });
+        //     return;
+        // }
         const ingredientsJSON = JSON.stringify(ingredients);
         // Update the recipe
         await sequelize.query(
@@ -272,7 +274,7 @@ const getAllCuisines = async (req: Request, res: Response): Promise<void> => {
     try {
         const [cuisines] = await sequelize.query("SELECT DISTINCT cuisine FROM Recipes", { type: QueryTypes.SELECT });
 
-        res.json({cuisines});
+        res.json({ cuisines });
     } catch (error) {
         res.status(500).json({ message: "Error fetching cuisines", error });
     }

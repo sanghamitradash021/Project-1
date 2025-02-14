@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+// import bodyParser from "body-parser";
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const database_1 = require("./config/database");
@@ -13,8 +14,10 @@ const recipeRoutes_1 = __importDefault(require("./routes/recipeRoutes"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = Number(process.env.PORT) || 3000;
+// const bodyParser = require('body-parser');
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
+// app.use(bodyParser.json());
 app.use("/api/USERS", userRoutes_1.default);
 app.use("/api/recipes", recipeRoutes_1.default);
 // Retrieve all recipes with pagination
