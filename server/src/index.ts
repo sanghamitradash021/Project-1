@@ -6,8 +6,11 @@ import { sequelize } from "./config/database";
 import syncTables from "./models/syncmodel";
 import userRoutes from "./routes/userRoutes";
 import recipeRoutes from "./routes/recipeRoutes";
+import ratingRoutes from "./routes/ratingRoutes";
+import commentRoutes from "./routes/commentRoutes";
 
 import { QueryTypes } from "sequelize";
+import path from "path";
 
 dotenv.config();
 
@@ -19,8 +22,13 @@ app.use(cors());
 app.use(express.json());
 // app.use(bodyParser.json());
 
+// Serve static files from the 'uploads' directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.use("/api/USERS", userRoutes);
 app.use("/api/recipes", recipeRoutes);
+app.use("/api/ratings", ratingRoutes);
+app.use("/api/comments", commentRoutes);
 // Retrieve all recipes with pagination
 // app.get("/recipes", async (req, res)=>{
 

@@ -16,13 +16,22 @@ const addRating = async (req: Request, res: Response): Promise<void> => {
         );
 
         if (existingRating) {
-            res.status(400).json({ message: "User has already rated this recipe" });
+            // ✅ If rating exists, update it instead of blocking
+            await sequelize.query(
+                "UPDATE Ratings SET rating = :rating, updatedAt = NOW() WHERE recipe_id = :recipeId AND user_id = :userId",
+                {
+                    replacements: { recipeId, userId, rating },
+                    type: QueryTypes.UPDATE,
+                }
+            );
+
+            res.status(200).json({ message: "Rating updated successfully" });
             return;
         }
 
-        // Insert the new rating
+        // If no existing rating, insert a new one
         await sequelize.query(
-            "INSERT INTO Ratings (recipe_id, user_id, rating, created_at, updated_at) VALUES (:recipeId, :userId, :rating, NOW(), NOW())",
+            "INSERT INTO Ratings (recipe_id, user_id, rating, createdAt, updatedAt) VALUES (:recipeId, :userId, :rating, NOW(), NOW())",
             {
                 replacements: { recipeId, userId, rating },
                 type: QueryTypes.INSERT,
@@ -31,12 +40,16 @@ const addRating = async (req: Request, res: Response): Promise<void> => {
 
         res.status(201).json({ message: "Rating added successfully" });
     } catch (error) {
-        res.status(500).json({ message: "Error adding rating", error });
+        console.error("❌ Error adding/updating rating:", error);
+        res.status(500).json({ message: "Error adding/updating rating", error });
     }
 };
 
+
 const getRating = async (req: Request, res: Response): Promise<void> => {
     try {
+        console.log("✅ getRating controller called with recipeId:", req.params.recipeId);
+
         const { recipeId } = req.params;
 
         // Get average rating for the recipe
@@ -48,19 +61,22 @@ const getRating = async (req: Request, res: Response): Promise<void> => {
             }
         );
 
-        // res.status(200).json({ averageRating: averageRating.avg_rating });
+        console.log("✅ Retrieved rating:", averageRating);
+
+        // ✅ Ensure a response is sent
+        res.status(200).json({ averageRating: averageRating });
     } catch (error) {
+        console.error("❌ Error in getRating:", error);
         res.status(500).json({ message: "Error fetching rating", error });
     }
 };
-
 const updateRating = async (req: Request, res: Response): Promise<void> => {
     try {
         const { ratingId, userId, rating } = req.body;
 
         // Check if the rating exists and belongs to the user
         const [existingRating] = await sequelize.query(
-            "SELECT * FROM Ratings WHERE rating_id = :ratingId AND user_id = :userId",
+            "SELECT * FROM Ratings WHERE rate_id = :ratingId AND user_id = :userId",
             {
                 replacements: { ratingId, userId },
                 type: QueryTypes.SELECT,
@@ -74,7 +90,7 @@ const updateRating = async (req: Request, res: Response): Promise<void> => {
 
         // Update the rating
         await sequelize.query(
-            "UPDATE Ratings SET rating = :rating, updated_at = NOW() WHERE rating_id = :ratingId",
+            "UPDATE Ratings SET rating = :rating, updatedAt = NOW() WHERE rate_id = :ratingId",
             {
                 replacements: { rating, ratingId },
                 type: QueryTypes.UPDATE,
@@ -93,7 +109,7 @@ const deleteRating = async (req: Request, res: Response): Promise<void> => {
 
         // Check if the rating exists and belongs to the user
         const [existingRating] = await sequelize.query(
-            "SELECT * FROM Ratings WHERE rating_id = :ratingId AND user_id = :userId",
+            "SELECT * FROM Ratings WHERE rate_id = :ratingId AND user_id = :userId",
             {
                 replacements: { ratingId, userId },
                 type: QueryTypes.SELECT,
@@ -107,7 +123,7 @@ const deleteRating = async (req: Request, res: Response): Promise<void> => {
 
         // Delete the rating
         await sequelize.query(
-            "DELETE FROM Ratings WHERE rating_id = :ratingId",
+            "DELETE FROM Ratings WHERE rate_id = :ratingId",
             {
                 replacements: { ratingId },
                 type: QueryTypes.DELETE,

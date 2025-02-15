@@ -8,6 +8,8 @@ import Home from './pages/Home';
 import CreateRecipe from './pages/CreateReipe';
 import RecipeList from './pages/RecipeList';
 import RecipeDetail from './pages/RecipeDetail';
+import MyRecipes from './pages/MyRecipes';
+import SinglePageRecipe from './pages/SinglePageRecipe';
 
 const App: React.FC = () => {
   return (
@@ -20,8 +22,10 @@ const App: React.FC = () => {
           {/* <Route path="/home" element={<Home />} /> */}
           <Route path="/create-recipe" element={<CreateRecipe />} />
           <Route path="/recipes" element={<RecipeList />} />
-          <Route path="/recipe/:id" element={<RecipeDetail />} />
+          <Route path="/recipes/:id" element={<RecipeDetail />} />
           <Route path="/" element={<Home />} />
+          <Route path="/my-recipes" element={<MyRecipes />} />
+          <Route path="/recipe/:id" element={<SinglePageRecipe />} />
         </Routes>
       </Layout>
     </Router>

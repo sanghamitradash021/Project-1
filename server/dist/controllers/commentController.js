@@ -4,14 +4,13 @@ const database_1 = require("../config/database");
 const sequelize_1 = require("sequelize");
 const addComment = async (req, res) => {
     try {
-        const { recipeId, userId, content, parentCommentId } = req.body;
-        const [newComment] = await database_1.sequelize.query(`INSERT INTO Comments (recipe_id, user_id, content, parent_comment_id, created_at, updated_at) 
-                VALUES (:recipeId, :userId, :content, :parentCommentId, NOW(), NOW())`, {
+        const { recipeId, userId, content } = req.body;
+        const [newComment] = await database_1.sequelize.query(`INSERT INTO Comments (recipe_id, user_id, content, createdAt, updatedAt) 
+                VALUES (:recipeId, :userId, :content, NOW(), NOW())`, {
             replacements: {
                 recipeId,
                 userId,
                 content,
-                parentCommentId: parentCommentId || null,
             },
             type: sequelize_1.QueryTypes.INSERT,
         });
@@ -24,7 +23,7 @@ const addComment = async (req, res) => {
 const getComments = async (req, res) => {
     try {
         const { recipeId } = req.params;
-        const comments = await database_1.sequelize.query("SELECT * FROM Comments WHERE recipe_id = :recipeId AND is_deleted = 0", {
+        const comments = await database_1.sequelize.query("SELECT * FROM Comments WHERE recipe_id = :recipeId", {
             replacements: { recipeId },
             type: sequelize_1.QueryTypes.SELECT,
         });
@@ -47,7 +46,7 @@ const updateComment = async (req, res) => {
             return;
         }
         // Update comment content
-        await database_1.sequelize.query("UPDATE Comments SET content = :content, updated_at = NOW() WHERE comment_id = :commentId", {
+        await database_1.sequelize.query("UPDATE Comments SET content = :content, updatedAt = NOW() WHERE comment_id = :commentId", {
             replacements: { content, commentId },
             type: sequelize_1.QueryTypes.UPDATE,
         });

@@ -1,20 +1,39 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.upload = exports.createRecipe = void 0;
 const database_1 = require("../config/database");
 const sequelize_1 = require("sequelize");
+const multer_1 = __importDefault(require("multer"));
 // import Recipe from "../models/recipe";
 /**
  * Create a new recipe
  */
+// Set up multer for file uploads
+const storage = multer_1.default.diskStorage({
+    destination: (_req, _file, cb) => {
+        cb(null, 'uploads/'); // Folder where uploaded images will be saved
+    },
+    filename: (_req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname); // Filename with timestamp to avoid conflicts
+    },
+});
+const upload = (0, multer_1.default)({ storage }); // Multer instance for handling image uploads
+exports.upload = upload;
+// Add recipe with image upload functionality
 const createRecipe = async (req, res) => {
     try {
         const { title, user_id, description, ingredients, // Array
         instructions, preparationTime, difficulty, cuisine, mealType, } = req.body;
-        // Convert `ingredients` array to JSON string
+        // Handle image upload
+        const image = req.file ? req.file.filename : null; // Get image filename if uploaded
+        // Convert ingredients array to JSON string
         const ingredientsJson = JSON.stringify(ingredients);
         // Insert recipe into database
-        const [newRecipe] = await database_1.sequelize.query(`INSERT INTO Recipes (title, user_id, description, ingredients, instructions, preparationTime, difficulty, cuisine, mealType, createdAt, updatedAt) 
-             VALUES (:title, :user_id, :description, :ingredients, :instructions, :preparationTime, :difficulty, :cuisine, :mealType, NOW(), NOW())`, {
+        const [newRecipe] = await database_1.sequelize.query(`INSERT INTO Recipes (title, user_id, description, ingredients, instructions, preparationTime, difficulty, cuisine, mealType, image, createdAt, updatedAt) 
+          VALUES (:title, :user_id, :description, :ingredients, :instructions, :preparationTime, :difficulty, :cuisine, :mealType, :image, NOW(), NOW())`, {
             replacements: {
                 title,
                 user_id,
@@ -24,31 +43,80 @@ const createRecipe = async (req, res) => {
                 preparationTime,
                 difficulty,
                 cuisine,
-                mealType
+                mealType,
+                image, // Store image filename in the database
             },
             type: sequelize_1.QueryTypes.INSERT,
         });
+        // Retrieve the inserted recipe ID
         const [idResult] = await database_1.sequelize.query("SELECT LAST_INSERT_ID() as id", { type: sequelize_1.QueryTypes.SELECT });
         const recipeId = idResult.id;
         if (!recipeId) {
             res.status(500).json({ message: "Failed to create recipe" });
             return;
         }
-        // Add tags to recipe (if any)
-        // if (tags && tags.length > 0) {
-        //     for (const tag of tags) {
-        //         await sequelize.query("INSERT INTO RecipeTags (recipe_id, tag_id) VALUES (:recipe_id, :tag_id)", {
-        //             replacements: { recipe_id: recipeId, tag_id: tag },
-        //             type: QueryTypes.INSERT,
-        //         });
-        //     }
-        // }
         res.status(201).json({ message: "Recipe created successfully", recipeId });
     }
     catch (error) {
+        console.error("Error creating recipe:", error);
         res.status(500).json({ message: "Error creating recipe", error });
     }
 };
+exports.createRecipe = createRecipe;
+// const createRecipe = async (req: Request, res: Response): Promise<void> => {
+//     try {
+//         const {
+//             title,
+//             user_id,
+//             description,
+//             ingredients, // Array
+//             instructions,
+//             preparationTime,
+//             difficulty,
+//             cuisine,
+//             mealType,
+//         } = req.body;
+//         // Convert `ingredients` array to JSON string
+//         const ingredientsJson = JSON.stringify(ingredients);
+//         // Insert recipe into database
+//         const [newRecipe] = await sequelize.query(
+//             `INSERT INTO Recipes (title, user_id, description, ingredients, instructions, preparationTime, difficulty, cuisine, mealType, createdAt, updatedAt) 
+//              VALUES (:title, :user_id, :description, :ingredients, :instructions, :preparationTime, :difficulty, :cuisine, :mealType, NOW(), NOW())`,
+//             {
+//                 replacements: {
+//                     title,
+//                     user_id,
+//                     description,
+//                     ingredients: ingredientsJson,
+//                     instructions,
+//                     preparationTime,
+//                     difficulty,
+//                     cuisine,
+//                     mealType
+//                 },
+//                 type: QueryTypes.INSERT,
+//             }
+//         );
+//         const [idResult] = await sequelize.query("SELECT LAST_INSERT_ID() as id", { type: QueryTypes.SELECT });
+//         const recipeId = (idResult as { id: number }).id;
+//         if (!recipeId) {
+//             res.status(500).json({ message: "Failed to create recipe" });
+//             return;
+//         }
+//         // Add tags to recipe (if any)
+//         // if (tags && tags.length > 0) {
+//         //     for (const tag of tags) {
+//         //         await sequelize.query("INSERT INTO RecipeTags (recipe_id, tag_id) VALUES (:recipe_id, :tag_id)", {
+//         //             replacements: { recipe_id: recipeId, tag_id: tag },
+//         //             type: QueryTypes.INSERT,
+//         //         });
+//         //     }
+//         // }
+//         res.status(201).json({ message: "Recipe created successfully", recipeId });
+//     } catch (error) {
+//         res.status(500).json({ message: "Error creating recipe", error });
+//     }
+// };
 /**
  * Retrieve a specific recipe by ID
  */
@@ -74,7 +142,6 @@ const getRecipeById = async (req, res) => {
  */
 const searchRecipes = async (req, res) => {
     try {
-        console.log("hii");
         const { query } = req.params;
         const recipes = await database_1.sequelize.query(`SELECT * FROM Recipes 
              WHERE title LIKE :query OR ingredients LIKE :query OR cuisine LIKE :query OR mealType LIKE :query`, {
@@ -216,7 +283,7 @@ const getRecipesByMealType = async (req, res) => {
 /**
  * Retrieve all available cuisine types
  */
-const getAllCuisines = async (req, res) => {
+const getAllCuisines = async (_req, res) => {
     try {
         const [cuisines] = await database_1.sequelize.query("SELECT DISTINCT cuisine FROM Recipes", { type: sequelize_1.QueryTypes.SELECT });
         res.json({ cuisines });
@@ -228,14 +295,40 @@ const getAllCuisines = async (req, res) => {
 /**
  * Retrieve all available meal types
  */
-const getAllMealTypes = async (req, res) => {
+// const getAllMealTypes = async (_req: Request, res: Response): Promise<void> => {
+//     try {
+//         console.log("hii")
+//         const mealTypes = await sequelize.query("SELECT DISTINCT meal_type FROM Recipes", { type: QueryTypes.SELECT });
+//         res.json(mealTypes);
+//     } catch (error) {
+//         res.status(500).json({ message: "Error fetching meal types", error });
+//     }
+// };
+/**
+ * Retrieve all recipes created by a specific user (by user_id)
+ */
+const getUserRecipes = async (req, res) => {
     try {
-        console.log("hii");
-        const mealTypes = await database_1.sequelize.query("SELECT DISTINCT meal_type FROM Recipes", { type: sequelize_1.QueryTypes.SELECT });
-        res.json(mealTypes);
+        console.log("hii user");
+        const { userId } = req.params; // Get userId from query params
+        console.log(userId);
+        if (!userId) {
+            res.status(400).json({ message: 'User ID is required.' });
+            return;
+        }
+        const recipes = await database_1.sequelize.query("SELECT * FROM Recipes WHERE user_id = :userId", {
+            replacements: { userId },
+            type: sequelize_1.QueryTypes.SELECT,
+        });
+        if (recipes.length === 0) {
+            res.status(404).json({ message: 'No recipes found for this user.' });
+            return;
+        }
+        res.status(200).json(recipes);
     }
     catch (error) {
-        res.status(500).json({ message: "Error fetching meal types", error });
+        console.error("Error fetching recipes by user:", error);
+        res.status(500).json({ message: "Error fetching recipes by user.", error });
     }
 };
 // export default {
@@ -260,6 +353,6 @@ const recipeController = {
     getRecipesByCuisine: getRecipesByCuisine,
     getRecipesByMealType: getRecipesByMealType,
     getAllCuisines: getAllCuisines,
-    getAllMealTypes: getAllMealTypes
+    getUserRecipes: getUserRecipes,
 };
 exports.default = recipeController;

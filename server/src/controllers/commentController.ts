@@ -4,17 +4,17 @@ import { QueryTypes } from "sequelize";
 
 const addComment = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { recipeId, userId, content, parentCommentId } = req.body;
+        const { recipeId, userId, content } = req.body;
 
         const [newComment] = await sequelize.query(
-            `INSERT INTO Comments (recipe_id, user_id, content, parent_comment_id, created_at, updated_at) 
-                VALUES (:recipeId, :userId, :content, :parentCommentId, NOW(), NOW())`,
+            `INSERT INTO Comments (recipe_id, user_id, content, createdAt, updatedAt) 
+                VALUES (:recipeId, :userId, :content, NOW(), NOW())`,
             {
                 replacements: {
                     recipeId,
                     userId,
                     content,
-                    parentCommentId: parentCommentId || null,
+
                 },
                 type: QueryTypes.INSERT,
             }
@@ -31,7 +31,7 @@ const getComments = async (req: Request, res: Response): Promise<void> => {
         const { recipeId } = req.params;
 
         const comments = await sequelize.query(
-            "SELECT * FROM Comments WHERE recipe_id = :recipeId AND is_deleted = 0",
+            "SELECT * FROM Comments WHERE recipe_id = :recipeId",
             {
                 replacements: { recipeId },
                 type: QueryTypes.SELECT,
@@ -64,7 +64,7 @@ const updateComment = async (req: Request, res: Response): Promise<void> => {
 
         // Update comment content
         await sequelize.query(
-            "UPDATE Comments SET content = :content, updated_at = NOW() WHERE comment_id = :commentId",
+            "UPDATE Comments SET content = :content, updatedAt = NOW() WHERE comment_id = :commentId",
             {
                 replacements: { content, commentId },
                 type: QueryTypes.UPDATE,
