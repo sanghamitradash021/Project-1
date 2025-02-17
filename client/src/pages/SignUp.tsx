@@ -223,22 +223,23 @@
 // };
 
 // export default SignUp;
-"use client";
+'use client';
 
-import type React from "react";
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import type React from 'react';
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    fullname: "",
-    role: "user",
+    username: '',
+    email: '',
+    password: '',
+    fullname: '',
+    role: 'user',
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -251,23 +252,24 @@ const SignUp: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError('');
     try {
-      const response = await fetch("http://localhost:3000/api/users/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('http://localhost:3000/api/users/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
       const responseData = await response.json();
       if (!response.ok) {
-        throw new Error(responseData.message || "Signup failed");
+        throw new Error(responseData.message || 'Signup failed');
       }
-
-      navigate("/login");
+      toast.success('Account created successfully!');
+      navigate('/login');
     } catch (error: any) {
       setError(error.message);
-      console.error("Registration failed:", error);
+      toast.error(error.message || 'Signup failed. Please try again.');
+      console.error('Registration failed:', error);
     }
   };
 

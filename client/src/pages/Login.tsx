@@ -213,19 +213,20 @@
 
 // export default Login;
 
-"use client";
+'use client';
 
-import type React from "react";
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import type React from 'react';
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -236,31 +237,34 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError('');
     try {
-      const response = await fetch("http://localhost:3000/api/users/login", {
-        method: "POST",
+      const response = await fetch('http://localhost:3000/api/users/login', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
         const responseData = await response.json();
-        throw new Error(responseData.message || "Login failed");
+        throw new Error(responseData.message || 'Login failed');
       }
 
       const data = await response.json();
-      sessionStorage.setItem("user", JSON.stringify(data.user));
-      sessionStorage.setItem("username", data.user.username);
-      sessionStorage.setItem("user_id", data.user.id);
-      sessionStorage.setItem("token", data.token);
+      sessionStorage.setItem('user', JSON.stringify(data.user));
+      sessionStorage.setItem('username', data.user.username);
+      sessionStorage.setItem('user_id', data.user.id);
+      sessionStorage.setItem('token', data.token);
 
-      navigate("/");
+      toast.success('Logged in successfully!');
+
+      navigate('/');
     } catch (error: any) {
       setError(error.message);
-      console.error("Login failed:", error);
+      toast.error(error.message || 'Login failed. Please try again.');
+      console.error('Login failed:', error);
     }
   };
 

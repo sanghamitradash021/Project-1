@@ -642,12 +642,15 @@ import type React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+// import { useNavigate } from 'react-router-dom';
+// import toast from 'react-hot-toast';
 
 interface CreateRecipeModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
 }
+// const navigate = useNavigate();
 
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dmenponou/image/upload';
 const CLOUDINARY_UPLOAD_PRESET = 'image_upload';
@@ -758,9 +761,12 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
 
       onSuccess();
       onClose();
+      // toast.success('Recipe created successfully!');
+      // navigate('/');
     } catch (err) {
       setError('Failed to create recipe. Please try again.');
       console.error('Error creating recipe:', err);
+      // toast.error('Failed to create recipe. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -815,7 +821,7 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                 value={formData.title}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-200"
-                placeholder="E.g., Grandma's Apple Pie"
+                placeholder="E.g., vegetable soup"
               />
             </div>
 
