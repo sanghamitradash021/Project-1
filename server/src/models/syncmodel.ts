@@ -16,16 +16,16 @@ const syncTables = async () => {
         await Tag.sync()
         console.log("Tag table synced successfully")
 
-        await Recipe.sync()
+        await Recipe.sync({ alter: true })
         console.log("Recipe table synced successfully")
 
         await RecipeTag.sync()
         console.log("Recipe table synced successfully")
 
-        await Comment.sync()
+        await Comment.sync({ alter: true })
         console.log("Comment table synced successfully")
 
-        await Rating.sync()
+        await Rating.sync({ alter: true })
         console.log("Rating table synced successfully")
 
         await Favorite.sync()

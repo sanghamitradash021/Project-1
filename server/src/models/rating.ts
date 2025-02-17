@@ -43,9 +43,9 @@ Rating.init(
     }
 )
 
-Rating.belongsTo(User, { foreignKey: "user_id" })
-Rating.belongsTo(Recipe, { foreignKey: "recipe_id" })
-User.hasMany(Rating, { foreignKey: "user_id" })
-Recipe.hasMany(Rating, { foreignKey: "recipe_id" })
+Rating.belongsTo(User, { foreignKey: "user_id", onDelete: "CASCADE" })
+Rating.belongsTo(Recipe, { foreignKey: "recipe_id", onDelete: "CASCADE" })
+User.hasMany(Rating, { foreignKey: "user_id", onDelete: "CASCADE" })
+Recipe.hasMany(Rating, { foreignKey: "recipe_id", onDelete: "CASCADE" })
 
 export default Rating

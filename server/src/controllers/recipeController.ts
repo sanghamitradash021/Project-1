@@ -33,10 +33,11 @@ const createRecipe = async (req: Request, res: Response): Promise<void> => {
             difficulty,
             cuisine,
             mealType,
+            image,
         } = req.body;
 
         // Handle image upload
-        const image = req.file ? req.file.filename : null; // Get image filename if uploaded
+        // const image = req.file ? req.file.filename : null; // Get image filename if uploaded
 
         // Convert ingredients array to JSON string
         const ingredientsJson = JSON.stringify(ingredients);
@@ -198,7 +199,7 @@ const getAllRecipes = async (req: Request, res: Response) => {
         console.log("hii");
 
         // Get page and limit from query parameters, default to 1 and 10 if not provided
-        const { page = 1, limit = 10 } = req.query;
+        const { page = 1, limit = 100 } = req.query;
 
         // Ensure page and limit are numbers
         const offset = (Number(page) - 1) * Number(limit);

@@ -16,13 +16,13 @@ const syncTables = async () => {
         console.log("User table synced successfully");
         await tag_1.default.sync();
         console.log("Tag table synced successfully");
-        await recipe_1.default.sync();
+        await recipe_1.default.sync({ alter: true });
         console.log("Recipe table synced successfully");
         await recipetag_1.default.sync();
         console.log("Recipe table synced successfully");
-        await comment_1.default.sync();
+        await comment_1.default.sync({ alter: true });
         console.log("Comment table synced successfully");
-        await rating_1.default.sync();
+        await rating_1.default.sync({ alter: true });
         console.log("Rating table synced successfully");
         await favorite_1.default.sync();
         console.log("Favorite table synced successfully");

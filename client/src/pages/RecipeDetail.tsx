@@ -218,12 +218,12 @@
 
 // export default RecipeDetail;
 
-"use client";
+'use client';
 
-import type React from "react";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 interface Comment {
   id: number;
@@ -249,7 +249,7 @@ interface Recipe {
 const RecipeDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
   const [userRating, setUserRating] = useState(0);
   const [loading, setLoading] = useState(true);
   const userId = 4; // Mocked User ID
@@ -264,7 +264,7 @@ const RecipeDetail: React.FC = () => {
         );
         setRecipe(response.data);
       } catch (error) {
-        console.error("Error fetching recipe:", error);
+        console.error('Error fetching recipe:', error);
         // Set mock data in case of error
       } finally {
         setLoading(false);
@@ -287,14 +287,14 @@ const RecipeDetail: React.FC = () => {
               ...prev,
               comments: [
                 ...prev.comments,
-                { id: Date.now(), text: comment, user: "You" },
+                { id: Date.now(), text: comment, user: 'You' },
               ],
             }
           : prev
       );
-      setComment("");
+      setComment('');
     } catch (error) {
-      console.error("Error posting comment:", error);
+      console.error('Error posting comment:', error);
     }
   };
 
@@ -310,7 +310,7 @@ const RecipeDetail: React.FC = () => {
       setUserRating(newRating);
       setRecipe((prev) => (prev ? { ...prev, rating: newRating } : prev));
     } catch (error) {
-      console.error("Error submitting rating:", error);
+      console.error('Error submitting rating:', error);
     }
   };
 
@@ -329,7 +329,7 @@ const RecipeDetail: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-8">
       <img
-        src={recipe.image || "/images/default-recipe.jpg"}
+        src={recipe.image || '/images/default-recipe.jpg'}
         alt={recipe.title}
         className="w-full h-96 object-cover rounded-xl mb-8"
       />
@@ -341,12 +341,18 @@ const RecipeDetail: React.FC = () => {
           <h3 className="text-2xl font-semibold text-gray-900 mb-4">
             Ingredients
           </h3>
+          {/* Ingredients Section */}
           <ul className="list-disc list-inside space-y-2">
-            {recipe.ingredients.map((ingredient, index) => (
-              <li key={index} className="text-gray-700">
-                {ingredient}
-              </li>
-            ))}
+            {Array.isArray(recipe?.ingredients) &&
+            recipe.ingredients.length > 0 ? (
+              recipe.ingredients.map((ingredient, index) => (
+                <li key={index} className="text-gray-700">
+                  {ingredient}
+                </li>
+              ))
+            ) : (
+              <p className="text-gray-500">No ingredients available.</p>
+            )}
           </ul>
         </div>
         <div>
@@ -361,7 +367,7 @@ const RecipeDetail: React.FC = () => {
 
       <div className="flex flex-wrap gap-4 mb-8">
         <div className="bg-gray-100 rounded-full px-4 py-2">
-          <span className="font-semibold">Prep Time:</span>{" "}
+          <span className="font-semibold">Prep Time:</span>{' '}
           {recipe.preparationTime} mins
         </div>
         <div className="bg-gray-100 rounded-full px-4 py-2">
@@ -385,7 +391,7 @@ const RecipeDetail: React.FC = () => {
               key={star}
               onClick={() => handleRatingChange(star)}
               className={`text-3xl ${
-                userRating >= star ? "text-yellow-400" : "text-gray-300"
+                userRating >= star ? 'text-yellow-400' : 'text-gray-300'
               }`}
             >
               ★
@@ -393,11 +399,11 @@ const RecipeDetail: React.FC = () => {
           ))}
         </div>
         <p className="text-gray-700 mt-2">
-          Current Rating: {recipe.rating.toFixed(1)}/5
+          {/* Current Rating: {recipe.rating.toFixed(1)}/5 */}
         </p>
       </div>
 
-      <div className="mb-8">
+      {/* <div className="mb-8">
         <h3 className="text-2xl font-semibold text-gray-900 mb-4">Comments</h3>
         <div className="space-y-4">
           {recipe.comments.map((c) => (
@@ -408,6 +414,20 @@ const RecipeDetail: React.FC = () => {
             </div>
           ))}
         </div>
+      </div> */}
+      {/* Comments Section */}
+      <div className="space-y-4">
+        {recipe?.comments?.length ? (
+          recipe.comments.map((c) => (
+            <div key={c.id} className="bg-gray-100 p-4 rounded-lg">
+              <p className="text-gray-800">
+                <span className="font-semibold">{c.user}:</span> {c.text}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">No comments yet.</p>
+        )}
       </div>
 
       <div>

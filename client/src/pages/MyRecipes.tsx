@@ -91,12 +91,12 @@
 
 // export default MyRecipes;
 
-"use client";
+'use client';
 
-import type React from "react";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import type React from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 // import { motion } from "framer-motion";
 
 const MyRecipes: React.FC = () => {
@@ -113,14 +113,14 @@ const MyRecipes: React.FC = () => {
     const fetchRecipes = async () => {
       setLoading(true);
       setError(null);
-  
+
       try {
-        const token = sessionStorage.getItem("token");
-        const userId = sessionStorage.getItem("user_id");
+        const token = sessionStorage.getItem('token');
+        const userId = sessionStorage.getItem('user_id');
 
         if (!token || !userId) {
-          setError("User is not authenticated.");
-          console.error("User is not authenticated.");
+          setError('User is not authenticated.');
+          console.error('User is not authenticated.');
           return;
         }
 
@@ -134,13 +134,13 @@ const MyRecipes: React.FC = () => {
         );
 
         if (response.data.length === 0) {
-          setError("No recipes found.");
+          setError('No recipes found.');
         }
 
         setRecipes(response.data);
       } catch (error) {
-        console.error("Error fetching recipes:", error);
-        setError("Error fetching recipes.");
+        console.error('Error fetching recipes:', error);
+        setError('Error fetching recipes.');
       } finally {
         setLoading(false);
       }
@@ -179,12 +179,12 @@ const MyRecipes: React.FC = () => {
           recipes.map((recipe) => (
             <div
               key={recipe.id}
-              className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-500 hover:scale-105"
-              whileHover={{ y: -5 }}
+              className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-500 hover:scale-105
+              whileHover={{ y: -5 }}"
             >
               <div className="relative h-48">
                 <img
-                  src={recipe.image || "/placeholder.svg"}
+                  src={recipe.image || '/placeholder.svg'}
                   alt={recipe.title}
                   className="w-full h-full object-cover"
                 />
@@ -218,7 +218,7 @@ const MyRecipes: React.FC = () => {
           <div className="col-span-full text-center">
             <p className="text-2xl text-gray-500">No recipes available.</p>
             <button
-              onClick={() => navigate("/create-recipe")}
+              onClick={() => navigate('/create-recipe')}
               className="mt-4 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300"
             >
               Create Your First Recipe

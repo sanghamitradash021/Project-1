@@ -211,13 +211,13 @@
 
 // export default Navbar;
 
-"use client";
+'use client';
 
-import type React from "react";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import CreateRecipeModal from "./CreateRecipeModal";
-import { useLocation } from "react-router-dom";
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import CreateRecipeModal from './CreateRecipeModal';
+import { useLocation } from 'react-router-dom';
 
 interface SearchResult {
   id: number;
@@ -230,35 +230,83 @@ const Navbar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [username, setUsername] = useState<any>(null);
-  const [searchResults] = useState<SearchResult[]>([
-    {
-      id: 1,
-      title: "Spaghetti Carbonara",
-      description:
-        "A classic Italian pasta dish with eggs, cheese, pancetta, and pepper.",
-      image: "https://source.unsplash.com/random/80x80/?pasta",
-    },
-    {
-      id: 2,
-      title: "Chicken Tikka Masala",
-      description: "Grilled chicken chunks in spiced curry sauce.",
-      image: "https://source.unsplash.com/random/80x80/?curry",
-    },
-  ]);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  // const [searchResults] = useState<SearchResult[]>([
+  //   {
+  //     id: 1,
+  //     title: "Spaghetti Carbonara",
+  //     description:
+  //       "A classic Italian pasta dish with eggs, cheese, pancetta, and pepper.",
+  //     image: "https://source.unsplash.com/random/80x80/?pasta",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Chicken Tikka Masala",
+  //     description: "Grilled chicken chunks in spiced curry sauce.",
+  //     image: "https://source.unsplash.com/random/80x80/?curry",
+  //   },
+  // ]);
+
+  //search
+
+  // Function to fetch recipes based on search input
   useEffect(() => {
-    let user = sessionStorage.getItem("username");
+    if (searchQuery.trim() === '') {
+      setSearchResults([]);
+      setShowDropdown(false);
+      return;
+    }
+
+    const fetchRecipes = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/recipes/search/${encodeURIComponent(
+            searchQuery
+          )}`
+        );
+        const data = await response.json();
+        if (response.ok) {
+          setSearchResults(data);
+          setShowDropdown(true);
+        } else {
+          setSearchResults([]);
+          setShowDropdown(false);
+        }
+      } catch (error) {
+        console.error('Search failed:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const delayDebounce = setTimeout(() => {
+      fetchRecipes();
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchQuery]);
+
+  const handleSelectRecipe = (recipeId: number) => {
+    setShowDropdown(false);
+    setSearchQuery('');
+    navigate(`/recipes/${recipeId}`);
+  };
+
+  useEffect(() => {
+    let user = sessionStorage.getItem('username');
     setUsername(user);
   }, [location]);
   const handleLogout = () => {
     setUsername(null);
     // Handle logout logic
     sessionStorage.clear();
-    navigate("/login");
+    navigate('/login');
   };
   const handleCreateRecipeSuccess = () => {
     // Refresh the recipe list or show a success message
@@ -320,13 +368,13 @@ const Navbar: React.FC = () => {
                   <div className="absolute left-0 right-0 mt-2 overflow-hidden rounded-lg border bg-white shadow-lg">
                     {searchResults.map((result) => (
                       <Link
-                        key={result.id}
-                        to={`/recipe/${result.id}`}
+                        key={result.recipe_id}
+                        to={`/recipes/${result.recipe_id}`}
                         className="flex items-center space-x-4 p-4 hover:bg-gray-50"
                         onClick={() => setShowDropdown(false)}
                       >
                         <img
-                          src={result.image || "/placeholder.svg"}
+                          src={result.image || '/placeholder.svg'}
                           alt={result.title}
                           className="h-16 w-16 rounded-lg object-cover"
                         />

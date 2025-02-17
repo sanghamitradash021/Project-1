@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import type React from "react";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import "swiper/swiper-bundle.css";
+import type React from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/swiper-bundle.css';
 
 interface Recipe {
-  id: number;
+  recipe_id: number;
   title: string;
   description: string;
   image: string;
@@ -28,14 +28,23 @@ const Home: React.FC = () => {
   const [mealTypeRecipes, setMealTypeRecipes] = useState<Recipe[]>([]);
   const [selectedMealType, setSelectedMealType] = useState<string | null>(null);
 
-  const cuisineTypes = ["Italian", "Indian", "Chinese", "Mexican", "Japanese"];
+  const cuisineTypes = [
+    'Italian',
+    'Indian',
+    'Chinese',
+    'Mexican',
+    'Japanese',
+    'American',
+    'Thai',
+    'Anglo-Indian',
+  ];
   const featuredCategories = [
-    { name: "Breakfast", image: "/images/quick-easy.jpg" },
-    { name: "Healthy", image: "/images/healthy.jpg" },
-    { name: "Vegetarian", image: "/images/vegetarian.jpg" },
-    { name: "Desserts", image: "/images/desserts.jpg" },
-    { name: "Lunch", image: "/images/breakfast.jpg" },
-    { name: "Dinner", image: "/images/breakfast.jpg" },
+    { name: 'Breakfast', image: '/assets/breakfast.jpeg' },
+    { name: 'Healthy', image: '/assets/healthy.jpeg' },
+    { name: 'Vegetarian', image: '/assets/vegetarian.jpeg' },
+    { name: 'Desserts', image: '/assets/dessert.jpeg' },
+    { name: 'Lunch', image: '/assets/lunch.jpeg' },
+    { name: 'Dinner', image: '/assets/dinner.jpeg' },
   ];
 
   useEffect(() => {
@@ -52,10 +61,9 @@ const Home: React.FC = () => {
         );
         setCuisineRecipes(cuisineData);
       } catch (error) {
-        console.error("Failed to fetch recipes:", error);
+        console.error('Failed to fetch recipes:', error);
       }
     };
-
     fetchRecipes();
   }, []);
 
@@ -67,56 +75,17 @@ const Home: React.FC = () => {
       setMealTypeRecipes(response.data);
       setSelectedMealType(mealType);
     } catch (error) {
-      console.error("Failed to fetch meal type recipes:", error);
+      console.error('Failed to fetch meal type recipes:', error);
     }
   };
 
-  const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => (
-    <div
-      className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
-      onClick={() => navigate(`/recipe/${recipe.id}`)}
-    >
-      <img
-        src={recipe.image || "/images/default-recipe.jpg"}
-        alt={recipe.title}
-        className="w-full h-48 object-cover"
-      />
-      <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          {recipe.title}
-        </h3>
-        <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-          {recipe.description}
-        </p>
-        <div className="flex items-center justify-between">
-          {recipe.rating && (
-            <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
-                <svg
-                  key={i}
-                  className={`w-4 h-4 ${
-                    i < Math.round(recipe.rating ?? 0)
-                      ? "text-yellow-400"
-                      : "text-gray-300"
-                  }`}
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
-              <span className="ml-1 text-sm text-gray-600">
-                {recipe.rating.toFixed(1)}
-              </span>
-            </div>
-          )}
-          <span className="text-sm font-medium text-indigo-600">
-            {recipe.cuisine}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
+  const handleRecipeClick = (id?: number) => {
+    if (id) {
+      navigate(`/recipes/${id}`);
+    } else {
+      console.error('Invalid Recipe ID:', id);
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
@@ -145,7 +114,7 @@ const Home: React.FC = () => {
                 onClick={() => fetchMealTypeRecipes(category.name)}
               >
                 <img
-                  src={category.image || "/placeholder.svg"}
+                  src={category.image || '/placeholder.svg'}
                   alt={category.name}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
@@ -169,7 +138,7 @@ const Home: React.FC = () => {
           <h2 className="text-3xl font-bold text-gray-900">Popular Cuisines</h2>
           <button
             className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300"
-            onClick={() => navigate("/recipes")}
+            onClick={() => navigate('/recipes')}
           >
             View All Recipes
           </button>
@@ -181,25 +150,30 @@ const Home: React.FC = () => {
                 {cuisine} Cuisine
               </h3>
               {recipes.slice(0, 3).map((recipe) => (
-                <RecipeCard key={recipe.id} recipe={recipe} />
+                <div
+                  key={recipe.recipe_id}
+                  className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                  onClick={() => handleRecipeClick(recipe.recipe_id)}
+                >
+                  <img
+                    src={recipe.image || '/images/default-recipe.jpg'}
+                    alt={recipe.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      {recipe.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+                      {recipe.description}
+                    </p>
+                  </div>
+                </div>
               ))}
             </div>
           ))}
         </div>
       </section>
-
-      {selectedMealType && (
-        <section>
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">
-            {selectedMealType} Recipes
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {mealTypeRecipes.map((recipe) => (
-              <RecipeCard key={recipe.id} recipe={recipe} />
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   );
 };

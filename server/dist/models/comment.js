@@ -38,8 +38,8 @@ Comment.init({
     tableName: "Comments",
     timestamps: true,
 });
-Comment.belongsTo(user_1.default, { foreignKey: "user_id" });
-Comment.belongsTo(recipe_1.default, { foreignKey: "recipe_id" });
-user_1.default.hasMany(Comment, { foreignKey: "user_id" });
-recipe_1.default.hasMany(Comment, { foreignKey: "recipe_id" });
+Comment.belongsTo(user_1.default, { foreignKey: "user_id", onDelete: "CASCADE" });
+Comment.belongsTo(recipe_1.default, { foreignKey: "recipe_id", onDelete: "CASCADE" });
+user_1.default.hasMany(Comment, { foreignKey: "user_id", onDelete: "CASCADE" });
+recipe_1.default.hasMany(Comment, { foreignKey: "recipe_id", onDelete: "CASCADE" });
 exports.default = Comment;

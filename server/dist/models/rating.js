@@ -42,8 +42,8 @@ Rating.init({
     tableName: "Ratings",
     timestamps: true,
 });
-Rating.belongsTo(user_1.default, { foreignKey: "user_id" });
-Rating.belongsTo(recipe_1.default, { foreignKey: "recipe_id" });
-user_1.default.hasMany(Rating, { foreignKey: "user_id" });
-recipe_1.default.hasMany(Rating, { foreignKey: "recipe_id" });
+Rating.belongsTo(user_1.default, { foreignKey: "user_id", onDelete: "CASCADE" });
+Rating.belongsTo(recipe_1.default, { foreignKey: "recipe_id", onDelete: "CASCADE" });
+user_1.default.hasMany(Rating, { foreignKey: "user_id", onDelete: "CASCADE" });
+recipe_1.default.hasMany(Rating, { foreignKey: "recipe_id", onDelete: "CASCADE" });
 exports.default = Rating;

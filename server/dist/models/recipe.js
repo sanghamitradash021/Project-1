@@ -66,6 +66,6 @@ Recipe.init({
     tableName: "Recipes",
     timestamps: true,
 });
-Recipe.belongsTo(user_1.default, { foreignKey: "user_id" });
-user_1.default.hasMany(Recipe, { foreignKey: "user_id" });
+Recipe.belongsTo(user_1.default, { foreignKey: "user_id", onDelete: "CASCADE" });
+user_1.default.hasMany(Recipe, { foreignKey: "user_id", onDelete: "CASCADE" });
 exports.default = Recipe;

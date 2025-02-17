@@ -26,9 +26,9 @@ exports.upload = upload;
 const createRecipe = async (req, res) => {
     try {
         const { title, user_id, description, ingredients, // Array
-        instructions, preparationTime, difficulty, cuisine, mealType, } = req.body;
+        instructions, preparationTime, difficulty, cuisine, mealType, image, } = req.body;
         // Handle image upload
-        const image = req.file ? req.file.filename : null; // Get image filename if uploaded
+        // const image = req.file ? req.file.filename : null; // Get image filename if uploaded
         // Convert ingredients array to JSON string
         const ingredientsJson = JSON.stringify(ingredients);
         // Insert recipe into database
@@ -162,7 +162,7 @@ const getAllRecipes = async (req, res) => {
     try {
         console.log("hii");
         // Get page and limit from query parameters, default to 1 and 10 if not provided
-        const { page = 1, limit = 10 } = req.query;
+        const { page = 1, limit = 100 } = req.query;
         // Ensure page and limit are numbers
         const offset = (Number(page) - 1) * Number(limit);
         const recipes = await database_1.sequelize.query("SELECT * FROM Recipes LIMIT :limit OFFSET :offset", {
