@@ -1,5 +1,3 @@
-'use client';
-
 import type React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -183,7 +181,7 @@ const Home: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {Object.entries(cuisineRecipes).map(([cuisine, recipes]) => (
-            <div key={cuisine} className="space-y-4">
+            <div key={cuisine} className="space-y-4 ">
               <h3 className="text-xl font-semibold text-gray-800">
                 {cuisine} Cuisine
               </h3>

@@ -4,7 +4,8 @@ import { QueryTypes } from "sequelize";
 
 const addComment = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { recipeId, userId, content } = req.body;
+        const { userId, content } = req.body;
+        const { recipeId } = req.params;
 
         const [newComment] = await sequelize.query(
             `INSERT INTO Comments (recipe_id, user_id, content, createdAt, updatedAt) 
@@ -14,17 +15,21 @@ const addComment = async (req: Request, res: Response): Promise<void> => {
                     recipeId,
                     userId,
                     content,
-
                 },
                 type: QueryTypes.INSERT,
             }
         );
 
         res.status(201).json({ message: "Comment added successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Error adding comment", error });
+    } catch (error: any) {
+        // Log the detailed error for debugging
+        console.error("Error adding comment:", error);
+
+        res.status(500).json({ message: "Error adding comment", error: error.message });
     }
 };
+
+
 
 const getComments = async (req: Request, res: Response): Promise<void> => {
     try {

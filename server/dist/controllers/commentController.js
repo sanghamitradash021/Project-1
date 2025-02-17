@@ -4,7 +4,8 @@ const database_1 = require("../config/database");
 const sequelize_1 = require("sequelize");
 const addComment = async (req, res) => {
     try {
-        const { recipeId, userId, content } = req.body;
+        const { userId, content } = req.body;
+        const { recipeId } = req.params;
         const [newComment] = await database_1.sequelize.query(`INSERT INTO Comments (recipe_id, user_id, content, createdAt, updatedAt) 
                 VALUES (:recipeId, :userId, :content, NOW(), NOW())`, {
             replacements: {
@@ -17,7 +18,9 @@ const addComment = async (req, res) => {
         res.status(201).json({ message: "Comment added successfully" });
     }
     catch (error) {
-        res.status(500).json({ message: "Error adding comment", error });
+        // Log the detailed error for debugging
+        console.error("Error adding comment:", error);
+        res.status(500).json({ message: "Error adding comment", error: error.message });
     }
 };
 const getComments = async (req, res) => {

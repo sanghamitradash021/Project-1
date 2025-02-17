@@ -218,8 +218,6 @@
 
 // export default RecipeDetail;
 
-'use client';
-
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -274,27 +272,70 @@ const RecipeDetail: React.FC = () => {
     fetchRecipe();
   }, [id]);
 
+  // const handleCommentSubmit = async () => {
+  //   if (!comment.trim() || !recipe) return;
+  //   try {
+  //     await axios.post(`http://localhost:3000/api/recipes/${id}/comments`, {
+  //       text: comment,
+  //       userId: userId,
+  //     });
+  //     setRecipe((prev) =>
+  //       prev
+  //         ? {
+  //             ...prev,
+  //             comments: [
+  //               ...prev.comments,
+  //               { id: Date.now(), text: comment, user: 'You' },
+  //             ],
+  //           }
+  //         : prev
+  //     );
+  //     setComment('');
+  //   } catch (error) {
+  //     console.error('Error posting comment:', error);
+  //   }
+  // };
+
   const handleCommentSubmit = async () => {
     if (!comment.trim() || !recipe) return;
+
+    // Retrieve the userId from sessionStorage
+    const userId = sessionStorage.getItem('user_id');
+    console.log('User ID from sessionStorage:', userId);
+
+    if (!userId) {
+      console.error(' Error: User is not logged in');
+      return;
+    }
+
     try {
-      await axios.post(`http://localhost:3000/api/recipes/${id}/comments`, {
-        text: comment,
-        userId: userId,
-      });
-      setRecipe((prev) =>
-        prev
-          ? {
-              ...prev,
-              comments: [
-                ...prev.comments,
-                { id: Date.now(), text: comment, user: 'You' },
-              ],
-            }
-          : prev
+      // Send the comment with the recipeId, userId, and content (comment)
+      const response = await axios.post(
+        `http://localhost:3000/api/comments/recipes/${id}`,
+        {
+          recipeId: id, // Recipe ID from URL
+          userId: userId, // User ID from sessionStorage
+          content: comment, // Comment content from textarea
+        }
       );
-      setComment('');
+
+      // Assuming the response contains the newly added comment with its ID and other details
+      const newComment = response.data;
+
+      // Update recipe state with new comment
+      setRecipe((prev) => {
+        if (prev && Array.isArray(prev.comments)) {
+          return {
+            ...prev,
+            comments: [...prev.comments, newComment],
+          };
+        }
+        return prev;
+      });
+
+      setComment(''); // Clear the comment input after submission
     } catch (error) {
-      console.error('Error posting comment:', error);
+      console.error(' Error posting comment:', error);
     }
   };
 

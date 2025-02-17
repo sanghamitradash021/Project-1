@@ -171,7 +171,7 @@ const MyRecipes: React.FC = () => {
 
   return (
     <div className="bg-gradient-to-r from-indigo-50 to-blue-50 min-h-screen p-8">
-      <h2 className="text-4xl font-extrabold text-center mb-12 text-indigo-800">
+      <h2 className="text-4xl font-extrabold text-center mb-12 text-indigo-800 mt-5">
         My Culinary Creations
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

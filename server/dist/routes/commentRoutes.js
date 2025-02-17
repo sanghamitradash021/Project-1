@@ -56,7 +56,8 @@ const router = express_1.default.Router();
  *       500:
  *         description: Error adding comment
  */
-router.post("/newcomment", commentController_1.default.addComment);
+// router.post("/newcomment", commentController.addComment);
+router.post("/recipes/:recipeId", commentController_1.default.addComment);
 /**
  * @swagger
  * /comments/{recipeId}:
