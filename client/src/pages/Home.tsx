@@ -133,6 +133,44 @@ const Home: React.FC = () => {
         </Swiper>
       </section>
 
+      {/* New Section to Render Meal Type Recipes */}
+      {selectedMealType && (
+        <section>
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">
+            {selectedMealType
+              ? `${selectedMealType} Recipes`
+              : 'Meal Type Recipes'}
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {mealTypeRecipes.length > 0 ? (
+              mealTypeRecipes.map((recipe) => (
+                <div
+                  key={recipe.recipe_id}
+                  className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                  onClick={() => handleRecipeClick(recipe.recipe_id)}
+                >
+                  <img
+                    src={recipe.image || '/images/default-recipe.jpg'}
+                    alt={recipe.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      {recipe.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+                      {recipe.description}
+                    </p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No recipes found for {selectedMealType}.</p>
+            )}
+          </div>
+        </section>
+      )}
+
       <section>
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900">Popular Cuisines</h2>

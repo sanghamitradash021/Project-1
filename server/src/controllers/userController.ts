@@ -48,6 +48,7 @@ const register = async (req: Request, res: Response): Promise<void> => {
             res.status(500).json({ message: "Failed to create user" });
             return;
         }
+        res.json({ message: "Profile created successfully" });
     } catch (error) {
         res.status(500).json({ message: "Error in registering", error });
     }

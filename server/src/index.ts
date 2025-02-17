@@ -8,6 +8,7 @@ import userRoutes from "./routes/userRoutes";
 import recipeRoutes from "./routes/recipeRoutes";
 import ratingRoutes from "./routes/ratingRoutes";
 import commentRoutes from "./routes/commentRoutes";
+import { swaggerDocs } from './swagger';
 
 import { QueryTypes } from "sequelize";
 import path from "path";
@@ -17,6 +18,7 @@ dotenv.config();
 const app = express();
 const PORT: number = Number(process.env.PORT) || 3000;
 // const bodyParser = require('body-parser');
+swaggerDocs(app, PORT);
 
 app.use(cors());
 app.use(express.json());

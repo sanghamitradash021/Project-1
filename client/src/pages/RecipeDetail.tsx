@@ -236,7 +236,7 @@ interface Recipe {
   title: string;
   description: string;
   image: string;
-  ingredients: string[];
+  ingredients: string[] | string;
   instructions: string;
   preparationTime: number;
   difficulty: string;
@@ -325,6 +325,11 @@ const RecipeDetail: React.FC = () => {
     return (
       <p className="text-center text-2xl text-red-500 mt-8">Recipe not found</p>
     );
+  const ingredientsArray = Array.isArray(recipe.ingredients)
+    ? recipe.ingredients
+    : typeof recipe.ingredients === 'string'
+    ? recipe.ingredients.split(',').map((item) => item.trim())
+    : [];
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-8">
@@ -342,11 +347,22 @@ const RecipeDetail: React.FC = () => {
             Ingredients
           </h3>
           {/* Ingredients Section */}
-          <ul className="list-disc list-inside space-y-2">
+          {/* <ul className="list-disc list-inside space-y-2">
             {Array.isArray(recipe?.ingredients) &&
             recipe.ingredients.length > 0 ? (
               recipe.ingredients.map((ingredient, index) => (
                 <li key={index} className="text-gray-700">
+                  {ingredient}
+                </li>
+              ))
+            ) : (
+              <p className="text-gray-500">No ingredients available.</p>
+            )}
+          </ul> */}
+          <ul className="list-inside list-disc space-y-2">
+            {ingredientsArray.length > 0 ? (
+              ingredientsArray.map((ingredient, index) => (
+                <li key={index} className="text-gray-600">
                   {ingredient}
                 </li>
               ))
