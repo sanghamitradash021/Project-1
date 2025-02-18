@@ -1,12 +1,18 @@
 "use strict";
 // import { Request, Response } from "express";
-// import { sequelize } from "../config/database";
-// import { QueryTypes } from "sequelize";
+// import RatingRepository from "../repositories/ratingRepository";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ratingRepository_1 = __importDefault(require("../repositories/ratingRepository"));
+/**
+ * Adds a rating for a recipe or updates an existing rating if the user has already rated it.
+ *
+ * @param {Request} req - The request object, containing recipeId, userId, and rating in the body.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @returns {Promise<void>} - A promise indicating the completion of the operation.
+ */
 const addRating = async (req, res) => {
     try {
         const { recipeId, userId, rating } = req.body;
@@ -28,6 +34,13 @@ const addRating = async (req, res) => {
         res.status(500).json({ message: "Error adding/updating rating", error });
     }
 };
+/**
+ * Retrieves the average rating for a specific recipe.
+ *
+ * @param {Request} req - The request object, containing recipeId in the params.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @returns {Promise<void>} - A promise indicating the completion of the operation.
+ */
 const getRating = async (req, res) => {
     try {
         const { recipeId } = req.params;
@@ -40,6 +53,13 @@ const getRating = async (req, res) => {
         res.status(500).json({ message: "Error fetching rating", error });
     }
 };
+/**
+ * Updates an existing rating for a recipe.
+ *
+ * @param {Request} req - The request object, containing ratingId, userId, and rating in the body.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @returns {Promise<void>} - A promise indicating the completion of the operation.
+ */
 const updateRating = async (req, res) => {
     try {
         const { ratingId, userId, rating } = req.body;
@@ -57,6 +77,13 @@ const updateRating = async (req, res) => {
         res.status(500).json({ message: "Error updating rating", error });
     }
 };
+/**
+ * Deletes a rating for a recipe.
+ *
+ * @param {Request} req - The request object, containing ratingId and userId in the body.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @returns {Promise<void>} - A promise indicating the completion of the operation.
+ */
 const deleteRating = async (req, res) => {
     try {
         const { ratingId, userId } = req.body;

@@ -1,12 +1,18 @@
 "use strict";
 // import { Request, Response } from "express";
-// import { sequelize } from "../config/database";
-// import { QueryTypes } from "sequelize";
+// import CommentRepository from "../repositories/commentRepository";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const commentRepository_1 = __importDefault(require("../repositories/commentRepository"));
+/**
+ * Adds a new comment to a recipe.
+ *
+ * @param {Request} req - The request object, containing the comment data in the body and recipeId in the params.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @returns {Promise<void>} - A promise indicating the completion of the operation.
+ */
 const addComment = async (req, res) => {
     try {
         const { userId, content } = req.body;
@@ -20,6 +26,13 @@ const addComment = async (req, res) => {
         res.status(500).json({ message: "Error adding comment", error: error.message });
     }
 };
+/**
+ * Fetches all comments for a specific recipe.
+ *
+ * @param {Request} req - The request object, containing recipeId in the params.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @returns {Promise<void>} - A promise indicating the completion of the operation.
+ */
 const getComments = async (req, res) => {
     try {
         const { recipeId } = req.params;
@@ -31,6 +44,13 @@ const getComments = async (req, res) => {
         res.status(500).json({ message: "Error fetching comments", error });
     }
 };
+/**
+ * Updates an existing comment.
+ *
+ * @param {Request} req - The request object, containing commentId, userId, and content in the body.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @returns {Promise<void>} - A promise indicating the completion of the operation.
+ */
 const updateComment = async (req, res) => {
     try {
         const { commentId, userId, content } = req.body;
@@ -48,6 +68,13 @@ const updateComment = async (req, res) => {
         res.status(500).json({ message: "Error updating comment", error });
     }
 };
+/**
+ * Deletes a comment from the database.
+ *
+ * @param {Request} req - The request object, containing commentId and userId in the body.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @returns {Promise<void>} - A promise indicating the completion of the operation.
+ */
 const deleteComment = async (req, res) => {
     try {
         const { commentId, userId } = req.body;
