@@ -9,6 +9,7 @@ import recipeRoutes from "./routes/recipeRoutes";
 import ratingRoutes from "./routes/ratingRoutes";
 import commentRoutes from "./routes/commentRoutes";
 import { swaggerDocs } from './swagger';
+import { errorHandler } from "./middleware/errorHandler";
 
 import { QueryTypes } from "sequelize";
 import path from "path";
@@ -31,27 +32,7 @@ app.use("/api/USERS", userRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/comments", commentRoutes);
-// Retrieve all recipes with pagination
-// app.get("/recipes", async (req, res)=>{
-
-//     try {
-//         console.log("hii")
-//         const page = 1
-//         const  limit = 10 
-//         const offset = (Number(page) - 1) * Number(limit);
-
-//         const [recipes] = await sequelize.query("SELECT * FROM Recipes LIMIT :limit OFFSET :offset", {
-//             replacements: { limit: Number(limit), offset },
-//             type: QueryTypes.SELECT,
-//         });
-
-//         console.log("Raw Query Result:", recipes);
-//         res.json({ recipes });
-//     } catch (error) {
-//         res.status(500).json({ message: "Error fetching recipes", error });
-//     }
-// }
-// );
+app.use(errorHandler);
 
 const startServer = async () => {
     try {

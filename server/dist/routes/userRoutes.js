@@ -112,7 +112,7 @@ router.get("/profile/:id", userController_1.default.getProfile);
  *       500:
  *         description: Error updating profile
  */
-router.patch("/profile/:id", userController_1.default.updateProfilePatch);
+router.patch("/profile/:id", userController_1.default.updateProfile);
 /**
  * @swagger
  * /user/{id}:
