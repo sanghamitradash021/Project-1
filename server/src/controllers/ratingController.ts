@@ -1,92 +1,5 @@
 
 
-
-// import { Request, Response } from "express";
-// import RatingRepository from "../repositories/ratingRepository";
-
-// const addRating = async (req: Request, res: Response): Promise<void> => {
-//     try {
-//         const { recipeId, userId, rating } = req.body;
-
-//         // Check if the user has already rated the recipe
-//         const existingRating = await RatingRepository.getRatingByUserAndRecipe(recipeId, userId);
-
-//         if (existingRating) {
-//             // Update existing rating
-//             await RatingRepository.updateRating(recipeId, userId, rating);
-//             res.status(200).json({ message: "Rating updated successfully" });
-//         } else {
-//             // Add new rating
-//             await RatingRepository.addRating(recipeId, userId, rating);
-//             res.status(201).json({ message: "Rating added successfully" });
-//         }
-//     } catch (error) {
-//         console.error("❌ Error adding/updating rating:", error);
-//         res.status(500).json({ message: "Error adding/updating rating", error });
-//     }
-// };
-
-// const getRating = async (req: Request, res: Response): Promise<void> => {
-//     try {
-//         const { recipeId } = req.params;
-
-//         // Get average rating for the recipe
-//         const averageRating = await RatingRepository.getAverageRating(Number(recipeId));
-
-//         res.status(200).json({ averageRating });
-//     } catch (error) {
-//         console.error("❌ Error in getRating:", error);
-//         res.status(500).json({ message: "Error fetching rating", error });
-//     }
-// };
-
-// const updateRating = async (req: Request, res: Response): Promise<void> => {
-//     try {
-//         const { ratingId, userId, rating } = req.body;
-
-//         // Check if the rating exists and belongs to the user
-//         const existingRating = await RatingRepository.getRatingByIdAndUser(ratingId, userId);
-
-//         if (!existingRating) {
-//             res.status(404).json({ message: "Rating not found or unauthorized" });
-//             return;
-//         }
-
-//         // Update the rating
-//         await RatingRepository.updateRating(existingRating.recipe_id, userId, rating);
-//         res.status(200).json({ message: "Rating updated successfully" });
-//     } catch (error) {
-//         res.status(500).json({ message: "Error updating rating", error });
-//     }
-// };
-
-// const deleteRating = async (req: Request, res: Response): Promise<void> => {
-//     try {
-//         const { ratingId, userId } = req.body;
-
-//         // Check if the rating exists and belongs to the user
-//         const existingRating = await RatingRepository.getRatingByIdAndUser(ratingId, userId);
-
-//         if (!existingRating) {
-//             res.status(404).json({ message: "Rating not found or unauthorized" });
-//             return;
-//         }
-
-//         // Delete the rating
-//         await RatingRepository.deleteRating(ratingId);
-//         res.status(200).json({ message: "Rating deleted successfully" });
-//     } catch (error) {
-//         res.status(500).json({ message: "Error deleting rating", error });
-//     }
-// };
-
-// export default {
-//     addRating,
-//     getRating,
-//     updateRating,
-//     deleteRating,
-// };
-
 import { Request, Response } from "express";
 import RatingRepository from "../repositories/ratingRepository";
 
@@ -114,7 +27,7 @@ const addRating = async (req: Request, res: Response): Promise<void> => {
             res.status(201).json({ message: "Rating added successfully" });
         }
     } catch (error) {
-        console.error("❌ Error adding/updating rating:", error);
+        console.error(" Error adding/updating rating:", error);
         res.status(500).json({ message: "Error adding/updating rating", error });
     }
 };
@@ -135,7 +48,7 @@ const getRating = async (req: Request, res: Response): Promise<void> => {
 
         res.status(200).json({ averageRating });
     } catch (error) {
-        console.error("❌ Error in getRating:", error);
+        console.error("Error in getRating:", error);
         res.status(500).json({ message: "Error fetching rating", error });
     }
 };

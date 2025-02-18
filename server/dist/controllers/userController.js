@@ -1,9 +1,7 @@
 "use strict";
 // import { Request, Response } from "express";
-// import bcrypt from "bcrypt";
 // import jwt from "jsonwebtoken";
-// import { sequelize } from "../config/database";
-// import { QueryTypes } from "sequelize";
+// import userRepository from "../repositories/userRepository";
 // import User from "../models/user";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -11,6 +9,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userRepository_1 = __importDefault(require("../repositories/userRepository"));
+/**
+ * Registers a new user.
+ *
+ * @param {Request} req - The request object, containing the user registration data in the body.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @returns {Promise<void>} - A promise indicating the completion of the operation.
+ */
 const register = async (req, res) => {
     try {
         const userExists = await userRepository_1.default.findByEmail(req.body.email);
@@ -29,6 +34,13 @@ const register = async (req, res) => {
         res.status(500).json({ message: "Error in registering", error });
     }
 };
+/**
+ * Logs in an existing user and provides a JWT token.
+ *
+ * @param {Request} req - The request object, containing the user's email and password in the body.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @returns {Promise<void>} - A promise indicating the completion of the operation.
+ */
 const login = async (req, res) => {
     try {
         const user = await userRepository_1.default.validateCredentials(req.body.email, req.body.password);
@@ -43,6 +55,13 @@ const login = async (req, res) => {
         res.status(500).json({ message: "Error logging in", error });
     }
 };
+/**
+ * Retrieves the profile information of a user by their ID.
+ *
+ * @param {Request} req - The request object, containing the user ID in the params.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @returns {Promise<void>} - A promise indicating the completion of the operation.
+ */
 const getProfile = async (req, res) => {
     try {
         const user = await userRepository_1.default.findById(Number(req.params.id));
@@ -56,6 +75,13 @@ const getProfile = async (req, res) => {
         res.status(500).json({ message: "Error fetching profile", error });
     }
 };
+/**
+ * Updates the profile information of a user.
+ *
+ * @param {Request} req - The request object, containing the updated user data in the body and user ID in the params.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @returns {Promise<void>} - A promise indicating the completion of the operation.
+ */
 const updateProfile = async (req, res) => {
     try {
         const success = await userRepository_1.default.update(Number(req.params.id), req.body);
@@ -69,6 +95,13 @@ const updateProfile = async (req, res) => {
         res.status(500).json({ message: "Error updating profile", error });
     }
 };
+/**
+ * Deletes a user by their ID.
+ *
+ * @param {Request} req - The request object, containing the user ID in the params.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @returns {Promise<void>} - A promise indicating the completion of the operation.
+ */
 const deleteUser = async (req, res) => {
     try {
         const success = await userRepository_1.default.delete(Number(req.params.id));

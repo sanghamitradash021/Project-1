@@ -1,11 +1,24 @@
 "use strict";
+// import { Request, Response, NextFunction } from "express";
+// import jwt from "jsonwebtoken";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authenticateUser = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-// Middleware to authenticate user via JWT
+/**
+ * Middleware to authenticate user via JWT.
+ *
+ * This middleware checks for the presence of a valid JWT in the Authorization header of the request.
+ * If the token is valid, the user information is attached to the request object. If invalid or absent,
+ * the request is rejected with a 401 Unauthorized status.
+ *
+ * @param {Request} req - The request object containing the Authorization header.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @param {NextFunction} next - The next middleware function to be called if authentication is successful.
+ * @returns {void} - The function does not return a value, but either passes control to the next middleware or sends a response.
+ */
 const authenticateUser = (req, res, next) => {
     try {
         // Get the token from the Authorization header
