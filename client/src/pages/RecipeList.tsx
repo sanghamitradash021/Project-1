@@ -169,12 +169,11 @@
 // };
 
 // export default RecipeList;
-"use client";
 
-import type React from "react";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 interface Recipe {
   recipe_id: number;
@@ -196,11 +195,11 @@ const RecipeList: React.FC = () => {
     const fetchRecipes = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/recipes/getall"
+          'http://localhost:3000/api/recipes/getall'
         );
         setRecipes(response.data);
       } catch (error) {
-        console.error("Failed to fetch recipes:", error);
+        console.error('Failed to fetch recipes:', error);
       } finally {
         setLoading(false);
       }
@@ -234,7 +233,7 @@ const RecipeList: React.FC = () => {
             >
               <div className="relative h-48">
                 <img
-                  src={recipe.image || "/images/default-recipe.jpg"}
+                  src={recipe.image || '/images/default-recipe.jpg'}
                   alt={recipe.title}
                   className="w-full h-full object-cover"
                 />
