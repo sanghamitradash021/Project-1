@@ -467,7 +467,7 @@ const SingleRecipe: React.FC = () => {
     };
 
     fetchRecipe();
-  }, [id, recipe]);
+  }, [id]);
 
   /**
    * Deletes the current recipe after confirming the action.

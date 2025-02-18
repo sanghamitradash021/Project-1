@@ -350,11 +350,13 @@ const MyRecipes: React.FC = () => {
       setError(null);
 
       try {
+        // const token = sessionStorage.getItem('token');
+        // const userId = sessionStorage.getItem('user_id');
+        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
         const token = sessionStorage.getItem('token');
-        const userId = sessionStorage.getItem('user_id');
 
         // Check if user is authenticated
-        if (!token || !userId) {
+        if (!token || !user.id) {
           setError(MyRecipesConstants.userNotAuthenticated); // Use constant
           console.error(MyRecipesConstants.userNotAuthenticated); // Use constant
           return;
@@ -362,7 +364,7 @@ const MyRecipes: React.FC = () => {
 
         // Fetch user's recipes from the backend API
         const response = await axios.get(
-          `${MyRecipesConstants.apiUrl}${userId}`, // Use constant
+          `${MyRecipesConstants.apiUrl}${user.id}`, // Use constant
           {
             headers: {
               Authorization: `Bearer ${token}`,
