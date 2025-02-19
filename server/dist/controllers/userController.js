@@ -1,8 +1,4 @@
 "use strict";
-// import { Request, Response } from "express";
-// import jwt from "jsonwebtoken";
-// import userRepository from "../repositories/userRepository";
-// import User from "../models/user";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };

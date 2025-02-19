@@ -1,6 +1,4 @@
 "use strict";
-// import { Request, Response } from "express";
-// import RatingRepository from "../repositories/ratingRepository";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -30,7 +28,7 @@ const addRating = async (req, res) => {
         }
     }
     catch (error) {
-        console.error("❌ Error adding/updating rating:", error);
+        console.error(" Error adding/updating rating:", error);
         res.status(500).json({ message: "Error adding/updating rating", error });
     }
 };
@@ -49,7 +47,7 @@ const getRating = async (req, res) => {
         res.status(200).json({ averageRating });
     }
     catch (error) {
-        console.error("❌ Error in getRating:", error);
+        console.error("Error in getRating:", error);
         res.status(500).json({ message: "Error fetching rating", error });
     }
 };

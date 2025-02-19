@@ -1,7 +1,4 @@
 "use strict";
-// import { Request, Response } from "express";
-// import recipeRepository from "../repositories/recipeRepository";
-// import multer from "multer";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };

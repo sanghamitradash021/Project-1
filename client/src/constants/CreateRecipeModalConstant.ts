@@ -41,3 +41,21 @@ export const CUISINE_OPTIONS = [
 export const API_ENDPOINTS = {
     CREATE_RECIPE: 'http://localhost:3000/api/recipes/create',
 };
+
+export const LABELS = {
+    CREATE_RECIPE_TITLE: 'Create Your Culinary Masterpiece',
+    ERROR_HEADING: 'Oops! Something went wrong:',
+    RECIPE_TITLE: 'Recipe Title',
+    PREPARATION_TIME: 'Preparation Time (minutes)',
+    DESCRIPTION: 'Description',
+    INGREDIENTS: 'Ingredients',
+    INSTRUCTIONS: 'Instructions',
+    DIFFICULTY: 'Difficulty',
+    MEAL_TYPE: 'Meal Type',
+    CUISINE: 'Cuisine',
+    RECIPE_IMAGE: 'Recipe Image',
+    CANCEL_BUTTON: 'Cancel',
+    CREATE_BUTTON: 'Create Recipe',
+    CREATING_BUTTON: 'Creating...',
+    IMAGE_UPLOADING: 'Uploading image...',
+};

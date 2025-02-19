@@ -1,6 +1,4 @@
 "use strict";
-// import { Request, Response } from "express";
-// import CommentRepository from "../repositories/commentRepository";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
