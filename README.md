@@ -18,19 +18,22 @@ Backend Setup
 
 1.Clone the repository:
 
-bashCopygit clone https://github.com/yourusername/recipe-sharing-platform.git cd recipe-sharing-platform
+bash git clone https://github.com/sanghamitradash021/Project-1.git
+cd recipe-sharing-platform
 
 2.Install dependencies:
 
-bashCopynpm install
+bash npm install
 
 3.Set up your .env file with the following environment variables:
 
-plaintextCopyDB_HOST=localhost DB_USER=root DB_PASSWORD=password DB_NAME=recipe_sharing_platform JWT_SECRET=your_jwt_secret
+plaintext 
+DB_HOST=localhost 
+DB_USER=root DB_PASSWORD=password 
+DB_NAME=recipe_sharing_platform 
+JWT_SECRET=your_jwt_secret
 
-4.Run the migrations to set up the database:
 
-bash npx sequelize-cli db:migrate
 
 Start the backend server:
 
@@ -66,18 +69,14 @@ Filters
 
 GET /api/recipes?mealType=<mealType>&cuisineType=<cuisineType>: Get recipes filtered by meal type and cuisine type
 
-Admin (Protected Routes)
 
-GET /api/admin/analytics: Get platform analytics (e.g., total recipes, users, comments, ratings)
 
 Database Schema Tables
 
-Users: Stores user information Recipes: Stores recipe details including name, ingredients, description, meal type, and cuisine type Comments: Stores user comments for recipes Ratings: Stores ratings for recipes Favorites: Stores favorite recipes for users Tags: Stores tags associated with recipes Admin: Stores admin data for platform management
+Users: Stores user information Recipes: Stores recipe details including name, ingredients, description, meal type, and cuisine type Comments: Stores user comments for recipes Ratings: Stores ratings for recipes Favorites: Stores favorite recipes for users Tags: Stores tags associated with recipes
 
 Contributing
 
-Fork the repository Create a new branch (git checkout -b feature/your-feature) Make your changes Commit your changes (git commit -am 'Add new feature') Push to the branch (git push origin feature/your-feature) Create a new pull request
-
-License This project is licensed under the MIT License - see the LICENSE file for details. Acknowledgements
+Acknowledgements
 
 Inspired by various recipe-sharing platforms Thanks to the open-source community for helpful libraries and tools
