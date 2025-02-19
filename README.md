@@ -49,7 +49,7 @@ bash npm install
 
 Start the frontend:
 
-bash npm start The frontend will run on http://localhost:3001. API Endpoints Authentication
+bash npm start The frontend will run on http://localhost:3000. API Endpoints Authentication
 
 POST /api/auth/signup: Register a new user POST /api/auth/login: Login and get JWT token
 
