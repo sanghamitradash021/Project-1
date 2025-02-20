@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 // Define user interface
 interface User {
@@ -39,14 +39,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = (userData: User, token: string) => {
     sessionStorage.setItem('user', JSON.stringify(userData));
     sessionStorage.setItem('token', token);
-    setUser(userData); // ✅ Updates state & triggers re-render
+    setUser(userData); // Updates state & triggers re-render
   };
 
   // Logout function (Clears session & triggers re-render)
   const logout = () => {
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('token');
-    setUser(null); // ✅ Clears state & triggers re-render
+    setUser(null); //  Clears state & triggers re-render
   };
 
   return (
