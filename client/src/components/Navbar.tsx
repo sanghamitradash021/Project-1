@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import CreateRecipeModal from './CreateRecipeModal';
 import { NavbarConstants } from '../constants/NavbarConstant';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 /**
  * Interface representing a single search result in the navbar.
@@ -30,6 +31,7 @@ const Navbar: React.FC = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [, setRecipeNotFound] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   /**
    * Fetches recipes based on the search query.
@@ -123,7 +125,13 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="bg-white/80 shadow-lg w-full fixed top-0 left-0 z-10 backdrop-blur-sm">
+      <nav
+        className={`bg-white/80 shadow-lg w-full fixed top-0 left-0 z-10 backdrop-blur-sm`}
+        style={{
+          background: theme === 'light' ? '#fff' : '#333',
+          color: theme === 'light' ? '#000' : '#fff',
+        }}
+      >
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex h-16 items-center justify-between">
             <Link to="/" className="flex items-center space-x-3">
@@ -236,6 +244,44 @@ const Navbar: React.FC = () => {
                   </div>
                 </Link>
               )}
+
+              <button
+                onClick={toggleTheme}
+                className="flex items-center space-x-2 px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
+              >
+                {theme === 'light' ? (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 3v1m0 16v1m8-9h1M3 12H2m15.364-6.364l.707-.707M5.636 5.636l-.707-.707M18.364 18.364l.707.707M5.636 18.364l-.707.707M12 5a7 7 0 100 14a7 7 0 000-14z"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 3a9 9 0 019 9a9 9 0 01-9 9a9 9 0 01-9-9a9 9 0 019-9zm0 0a6.003 6.003 0 01-5.196 5.984A6.003 6.003 0 0112 3z"
+                    />
+                  </svg>
+                )}
+                <span>{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
+              </button>
             </div>
           </div>
         </div>

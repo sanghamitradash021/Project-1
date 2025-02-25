@@ -2,6 +2,7 @@ import type React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import { FORM_LABELS } from '../constants/formLabels'; // Import the constants
+import Cookies from 'js-cookie';
 
 interface EditRecipeModalProps {
   recipe: any;
@@ -44,7 +45,7 @@ const EditRecipeModal: React.FC<EditRecipeModalProps> = ({
     setLoading(true);
 
     try {
-      const token = sessionStorage.getItem('token');
+      const token = Cookies.get('auth_token');
       const response = await axios.put(
         `http://localhost:3000/api/recipes/${recipe.recipe_id}`,
         formData,

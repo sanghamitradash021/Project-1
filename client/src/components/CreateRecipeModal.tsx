@@ -1,7 +1,8 @@
-import type React from 'react';
+// import type React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
 // import { useNavigate } from 'react-router-dom';
 // import toast from 'react-hot-toast';
 
@@ -105,7 +106,8 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
     setError('');
 
     try {
-      const token = sessionStorage.getItem('token');
+      const token = Cookies.get('auth_token');
+      console.log(token);
       if (!token) {
         setError('User is not authenticated.');
         return;

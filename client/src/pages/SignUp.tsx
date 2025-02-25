@@ -22,6 +22,7 @@ const SignUp: React.FC = () => {
 
   const onSubmit = async (data: any) => {
     setError('');
+    data = { ...data, role: 'user' };
     try {
       const response = await fetch(URLS.register, {
         method: 'POST',
@@ -34,6 +35,7 @@ const SignUp: React.FC = () => {
           responseData.message || SIGNUP_MESSAGES.error.registrationFailed
         );
       }
+      console.log(data);
       toast.success(SIGNUP_MESSAGES.success.accountCreated);
       navigate('/login');
     } catch (error: any) {
@@ -188,7 +190,7 @@ const SignUp: React.FC = () => {
           </div>
 
           {/* Role Selection */}
-          <div>
+          {/* <div>
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Select Role
             </label>
@@ -212,7 +214,7 @@ const SignUp: React.FC = () => {
                 {String(errors.role?.message)}
               </span>
             )}
-          </div>
+          </div> */}
 
           {/* Submit Button */}
           <button

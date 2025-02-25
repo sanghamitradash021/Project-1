@@ -27,7 +27,7 @@ interface Recipe {
  *   <RecipeList />
  * )
  */
-const RecipeList: React.FC = () => {
+const RecipeList: React.FC = ({ theme }) => {
   const [recipes, setRecipes] = useState<Recipe[]>([]); // State to hold the list of recipes
   const [loading, setLoading] = useState(true); // State to track the loading status
   const navigate = useNavigate(); // Hook to navigate to different routes
@@ -70,18 +70,79 @@ const RecipeList: React.FC = () => {
     );
   }
 
+  // return (
+  //   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  //     <h2 className="text-3xl font-bold text-gray-900 mb-8">
+  //       {CONSTANTS.ALL_RECIPES_TITLE}
+  //     </h2>{' '}
+  //     {/* Use constant title */}
+  //     {recipes.length > 0 ? (
+  //       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+  //         {recipes.map((recipe) => (
+  //           <div
+  //             key={recipe.recipe_id}
+  //             className={CONSTANTS.RECIPE_ITEM_CLASSES} // Use constant recipe item classes
+  //             onClick={() => handleRecipeClick(recipe.recipe_id)}
+  //           >
+  //             <div className="relative h-48">
+  //               <img
+  //                 src={recipe.image || '/images/default-recipe.jpg'}
+  //                 alt={recipe.title}
+  //                 className={CONSTANTS.RECIPE_IMAGE_CLASSES} // Use constant image classes
+  //               />
+  //               <div className={CONSTANTS.RECIPE_CUISINE_CLASSES}>
+  //                 {recipe.cuisine}
+  //               </div>
+  //             </div>
+  //             <div className="p-4">
+  //               <h3 className={CONSTANTS.RECIPE_TITLE_CLASSES}>
+  //                 {recipe.title}
+  //               </h3>{' '}
+  //               {/* Use constant title classes */}
+  //               <p className={CONSTANTS.RECIPE_DESCRIPTION_CLASSES}>
+  //                 {recipe.description}
+  //               </p>{' '}
+  //               {/* Use constant description classes */}
+  //               <div className="flex justify-between items-center text-sm text-gray-500">
+  //                 <span>{recipe.preparationTime} mins</span>
+  //                 <span className={CONSTANTS.RECIPE_DIFFICULTY_CLASSES}>
+  //                   {recipe.difficulty}
+  //                 </span>
+  //               </div>
+  //             </div>
+  //           </div>
+  //         ))}
+  //       </div>
+  //     ) : (
+  //       <p className="text-xl text-gray-600 text-center">
+  //         {CONSTANTS.NO_RECIPES_MESSAGE} {/* Use constant no recipes message */}
+  //       </p>
+  //     )}
+  //   </div>
+  // );
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h2 className="text-3xl font-bold text-gray-900 mb-8">
+    <div
+      className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 ${
+        theme === 'light' ? 'bg-white' : 'bg-gray-800'
+      }`}
+    >
+      <h2
+        className={`text-3xl font-bold mb-8 ${
+          theme === 'light' ? 'text-gray-900' : 'text-white'
+        }`}
+      >
         {CONSTANTS.ALL_RECIPES_TITLE}
-      </h2>{' '}
-      {/* Use constant title */}
+      </h2>
+
       {recipes.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {recipes.map((recipe) => (
             <div
               key={recipe.recipe_id}
-              className={CONSTANTS.RECIPE_ITEM_CLASSES} // Use constant recipe item classes
+              className={`${
+                theme === 'light' ? 'bg-white' : 'bg-gray-700'
+              } rounded-lg shadow-lg overflow-hidden transition-all hover:scale-105 cursor-pointer`}
               onClick={() => handleRecipeClick(recipe.recipe_id)}
             >
               <div className="relative h-48">
@@ -90,22 +151,44 @@ const RecipeList: React.FC = () => {
                   alt={recipe.title}
                   className={CONSTANTS.RECIPE_IMAGE_CLASSES} // Use constant image classes
                 />
-                <div className={CONSTANTS.RECIPE_CUISINE_CLASSES}>
-                  {recipe.cuisine}
+                <div
+                  className={`${
+                    theme === 'light'
+                      ? 'bg-gradient-to-t from-black/60 to-transparent'
+                      : 'bg-gradient-to-t from-black/80 to-transparent'
+                  } absolute inset-0`}
+                >
+                  <div className={CONSTANTS.RECIPE_CUISINE_CLASSES}>
+                    {recipe.cuisine}
+                  </div>
                 </div>
               </div>
               <div className="p-4">
-                <h3 className={CONSTANTS.RECIPE_TITLE_CLASSES}>
+                <h3
+                  className={`${
+                    theme === 'light' ? 'text-gray-900' : 'text-white'
+                  } ${CONSTANTS.RECIPE_TITLE_CLASSES}`}
+                >
                   {recipe.title}
-                </h3>{' '}
-                {/* Use constant title classes */}
-                <p className={CONSTANTS.RECIPE_DESCRIPTION_CLASSES}>
+                </h3>
+                <p
+                  className={`${
+                    theme === 'light' ? 'text-gray-600' : 'text-white'
+                  } ${CONSTANTS.RECIPE_DESCRIPTION_CLASSES}`}
+                >
                   {recipe.description}
-                </p>{' '}
-                {/* Use constant description classes */}
-                <div className="flex justify-between items-center text-sm text-gray-500">
+                </p>
+                <div
+                  className={`flex justify-between items-center text-sm ${
+                    theme === 'light' ? 'text-gray-500' : 'text-white'
+                  }`}
+                >
                   <span>{recipe.preparationTime} mins</span>
-                  <span className={CONSTANTS.RECIPE_DIFFICULTY_CLASSES}>
+                  <span
+                    className={`${
+                      theme === 'light' ? 'text-gray-700' : 'text-black'
+                    } ${CONSTANTS.RECIPE_DIFFICULTY_CLASSES}`}
+                  >
                     {recipe.difficulty}
                   </span>
                 </div>
@@ -114,8 +197,12 @@ const RecipeList: React.FC = () => {
           ))}
         </div>
       ) : (
-        <p className="text-xl text-gray-600 text-center">
-          {CONSTANTS.NO_RECIPES_MESSAGE} {/* Use constant no recipes message */}
+        <p
+          className={`text-xl text-center ${
+            theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+          }`}
+        >
+          {CONSTANTS.NO_RECIPES_MESSAGE}
         </p>
       )}
     </div>

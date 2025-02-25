@@ -2,7 +2,7 @@
 
 export const RecipeDetailConstants = {
     apiUrl: 'http://localhost:3000/api/recipes/',
-    commentApiUrl: 'http://localhost:3000/api/comments/recipes/',
+    commentApiUrl: 'http://localhost:3000/api/comments/',
     loadingSpinnerClass: 'animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-indigo-600',
     recipeImageClass: 'w-full h-96 object-cover rounded-xl mb-8',
     recipeTitleClass: 'text-4xl font-bold text-gray-900 mb-4',

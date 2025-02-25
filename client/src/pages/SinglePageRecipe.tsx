@@ -32,7 +32,7 @@ interface Recipe {
   updatedAt: string;
 }
 
-const SingleRecipe: React.FC = () => {
+const SingleRecipe: React.FC = ({ theme }) => {
   const { id } = useParams<{ id: string }>(); // Get ID from URL
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(true);
@@ -116,75 +116,270 @@ const SingleRecipe: React.FC = () => {
     }
   };
 
+  // return (
+  //   <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white px-4 py-16">
+  //     <article className="mx-auto max-w-4xl space-y-8">
+  //       <div className="overflow-hidden rounded-2xl bg-white shadow-lg">
+  //         <div className="relative h-[400px] w-full">
+  //           <img
+  //             src={recipe.image || PLACEHOLDER_IMAGE}
+  //             alt={recipe.title}
+  //             className="h-full w-full object-cover"
+  //           />
+  //           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+  //           <div className="absolute bottom-0 left-0 right-0 p-8">
+  //             <h1 className="mb-2 text-4xl font-bold text-white">
+  //               {recipe.title}
+  //             </h1>
+  //             <p className="text-lg text-gray-200">{recipe.description}</p>
+  //           </div>
+  //         </div>
+
+  //         <div className="grid gap-8 p-8 lg:grid-cols-3">
+  //           <div className="lg:col-span-2 lg:border-r lg:pr-8">
+  //             <section className="mb-8">
+  //               <h2 className="mb-4 flex items-center text-xl font-semibold">
+  //                 Ingredients
+  //               </h2>
+  //               <ul className="list-inside list-disc space-y-2">
+  //                 {ingredientsArray.length > 0 ? (
+  //                   ingredientsArray.map((ingredient, index) => (
+  //                     <li key={index} className="text-gray-600">
+  //                       {ingredient}
+  //                     </li>
+  //                   ))
+  //                 ) : (
+  //                   <p className="text-gray-500">No ingredients available.</p>
+  //                 )}
+  //               </ul>
+  //             </section>
+
+  //             <section>
+  //               <h2 className="mb-4 flex items-center text-xl font-semibold">
+  //                 Instructions
+  //               </h2>
+  //               <p className="whitespace-pre-wrap text-gray-600">
+  //                 {recipe.instructions}
+  //               </p>
+  //             </section>
+  //           </div>
+
+  //           <div className="space-y-6 lg:col-span-1">
+  //             <div className="rounded-lg bg-gray-50 p-6">
+  //               <h3 className="mb-4 text-lg font-semibold">Recipe Details</h3>
+  //               <dl className="space-y-4">
+  //                 <div>
+  //                   <dt className="flex items-center text-sm font-medium text-gray-500">
+  //                     Preparation Time
+  //                   </dt>
+  //                   <dd className="mt-1">{recipe.preparationTime} minutes</dd>
+  //                 </div>
+  //                 <div>
+  //                   <dt className="flex items-center text-sm font-medium text-gray-500">
+  //                     Difficulty
+  //                   </dt>
+  //                   <dd className="mt-1">{recipe.difficulty}</dd>
+  //                 </div>
+  //                 <div>
+  //                   <dt className="flex items-center text-sm font-medium text-gray-500">
+  //                     Cuisine
+  //                   </dt>
+  //                   <dd className="mt-1">{recipe.cuisine}</dd>
+  //                 </div>
+  //               </dl>
+  //             </div>
+
+  //             <div className="flex flex-col space-y-3">
+  //               <button
+  //                 onClick={() => setShowEditModal(true)}
+  //                 className="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-indigo-700"
+  //               >
+  //                 Edit Recipe
+  //               </button>
+  //               <button
+  //                 onClick={handleDelete}
+  //                 className="inline-flex items-center justify-center rounded-lg border border-red-200 px-6 py-3 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
+  //               >
+  //                 Delete Recipe
+  //               </button>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </article>
+  //     {showEditModal && (
+  //       <EditRecipeModal
+  //         recipe={recipe}
+  //         onClose={() => {
+  //           setShowEditModal(false);
+  //           refreshRecipe(); // Refresh the recipe data after editing
+  //         }}
+  //         onUpdate={(updatedRecipe) => {
+  //           setRecipe(updatedRecipe);
+  //           toast.success(TOAST_SUCCESS_MESSAGE); // Success toast on update
+  //         }}
+  //       />
+  //     )}
+  //     <ToastContainer />
+  //   </div>
+  // );
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white px-4 py-16">
+    <div
+      className={`min-h-screen bg-gradient-to-b ${
+        theme === 'light' ? 'from-gray-50 to-white' : 'from-gray-800 to-black'
+      } px-4 py-16`}
+    >
       <article className="mx-auto max-w-4xl space-y-8">
-        <div className="overflow-hidden rounded-2xl bg-white shadow-lg">
+        <div
+          className={`overflow-hidden rounded-2xl shadow-lg ${
+            theme === 'light' ? 'bg-white' : 'bg-gray-800'
+          }`}
+        >
           <div className="relative h-[400px] w-full">
             <img
               src={recipe.image || PLACEHOLDER_IMAGE}
               alt={recipe.title}
               className="h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            <div
+              className={`absolute inset-0 ${
+                theme === 'light'
+                  ? 'bg-gradient-to-t from-black/60 to-transparent'
+                  : 'bg-gradient-to-t from-black/80 to-transparent'
+              }`}
+            />
             <div className="absolute bottom-0 left-0 right-0 p-8">
-              <h1 className="mb-2 text-4xl font-bold text-white">
+              <h1
+                className={`mb-2 text-4xl font-bold ${
+                  theme === 'light' ? 'text-white' : 'text-gray-200'
+                }`}
+              >
                 {recipe.title}
               </h1>
-              <p className="text-lg text-gray-200">{recipe.description}</p>
+              <p
+                className={`text-lg ${
+                  theme === 'light' ? 'text-gray-200' : 'text-gray-400'
+                }`}
+              >
+                {recipe.description}
+              </p>
             </div>
           </div>
 
           <div className="grid gap-8 p-8 lg:grid-cols-3">
             <div className="lg:col-span-2 lg:border-r lg:pr-8">
               <section className="mb-8">
-                <h2 className="mb-4 flex items-center text-xl font-semibold">
+                <h2
+                  className={`mb-4 flex items-center text-xl font-semibold ${
+                    theme === 'light' ? 'text-gray-900' : 'text-white'
+                  }`}
+                >
                   Ingredients
                 </h2>
                 <ul className="list-inside list-disc space-y-2">
                   {ingredientsArray.length > 0 ? (
                     ingredientsArray.map((ingredient, index) => (
-                      <li key={index} className="text-gray-600">
+                      <li
+                        key={index}
+                        className={`${
+                          theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+                        }`}
+                      >
                         {ingredient}
                       </li>
                     ))
                   ) : (
-                    <p className="text-gray-500">No ingredients available.</p>
+                    <p
+                      className={`${
+                        theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                      }`}
+                    >
+                      No ingredients available.
+                    </p>
                   )}
                 </ul>
               </section>
 
               <section>
-                <h2 className="mb-4 flex items-center text-xl font-semibold">
+                <h2
+                  className={`mb-4 flex items-center text-xl font-semibold ${
+                    theme === 'light' ? 'text-gray-900' : 'text-white'
+                  }`}
+                >
                   Instructions
                 </h2>
-                <p className="whitespace-pre-wrap text-gray-600">
+                <p
+                  className={`whitespace-pre-wrap ${
+                    theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+                  }`}
+                >
                   {recipe.instructions}
                 </p>
               </section>
             </div>
 
             <div className="space-y-6 lg:col-span-1">
-              <div className="rounded-lg bg-gray-50 p-6">
-                <h3 className="mb-4 text-lg font-semibold">Recipe Details</h3>
+              <div
+                className={`rounded-lg p-6 ${
+                  theme === 'light' ? 'bg-gray-50' : 'bg-gray-700'
+                }`}
+              >
+                <h3
+                  className={`mb-4 text-lg font-semibold ${
+                    theme === 'light' ? 'text-gray-900' : 'text-white'
+                  }`}
+                >
+                  Recipe Details
+                </h3>
                 <dl className="space-y-4">
                   <div>
-                    <dt className="flex items-center text-sm font-medium text-gray-500">
+                    <dt
+                      className={`flex items-center text-sm font-medium ${
+                        theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                      }`}
+                    >
                       Preparation Time
                     </dt>
-                    <dd className="mt-1">{recipe.preparationTime} minutes</dd>
+                    <dd
+                      className={`mt-1 ${
+                        theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                      }`}
+                    >
+                      {recipe.preparationTime} minutes
+                    </dd>
                   </div>
                   <div>
-                    <dt className="flex items-center text-sm font-medium text-gray-500">
+                    <dt
+                      className={`flex items-center text-sm font-medium ${
+                        theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                      }`}
+                    >
                       Difficulty
                     </dt>
-                    <dd className="mt-1">{recipe.difficulty}</dd>
+                    <dd
+                      className={`mt-1 ${
+                        theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                      }`}
+                    >
+                      {recipe.difficulty}
+                    </dd>
                   </div>
                   <div>
-                    <dt className="flex items-center text-sm font-medium text-gray-500">
+                    <dt
+                      className={`flex items-center text-sm font-medium ${
+                        theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                      }`}
+                    >
                       Cuisine
                     </dt>
-                    <dd className="mt-1">{recipe.cuisine}</dd>
+                    <dd
+                      className={`mt-1 ${
+                        theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                      }`}
+                    >
+                      {recipe.cuisine}
+                    </dd>
                   </div>
                 </dl>
               </div>
@@ -192,13 +387,21 @@ const SingleRecipe: React.FC = () => {
               <div className="flex flex-col space-y-3">
                 <button
                   onClick={() => setShowEditModal(true)}
-                  className="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-indigo-700"
+                  className={`inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-medium transition-colors ${
+                    theme === 'light'
+                      ? 'bg-indigo-600 text-white hover:bg-indigo-700'
+                      : 'bg-indigo-700 text-white hover:bg-indigo-800'
+                  }`}
                 >
                   Edit Recipe
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="inline-flex items-center justify-center rounded-lg border border-red-200 px-6 py-3 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
+                  className={`inline-flex items-center justify-center rounded-lg border border-red-200 px-6 py-3 text-sm font-medium transition-colors ${
+                    theme === 'light'
+                      ? 'text-red-600 hover:bg-red-50'
+                      : 'text-red-400 hover:bg-red-600'
+                  }`}
                 >
                   Delete Recipe
                 </button>
